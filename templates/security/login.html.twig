@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>ToShopList - Connexion</title>
+        <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
+    </head>
+    <body>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mx-auto">
+                    <h2>Connexion</h2>
+                    <form action="{{ path('security_login') }}" method="post">
+                        <div class="form-group">
+                            <label>Email</label><input class="form-control" name="_username" placeholder="adresse@mail.com" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label>Mot de passe</label><input class="form-control" name="_password" type="password">
+                        </div>
+                        <input checked id="remember_me" name="_remember_me" type="checkbox"/>
+                        <label for="remember_me">Se souvenir de moi</label>
+                        <div class="form-group">
+                            <button class="btn btn-success" type="submit">Connexion</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </body>
+</html>
