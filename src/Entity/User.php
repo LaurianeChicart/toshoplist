@@ -47,6 +47,23 @@ class User implements UserInterface
      */
     private $confirm_password;
 
+    /**
+     * @Assert\Length(
+     *      min = 8,
+     *      minMessage = "Le mot de passe doit comporter 8 caractères minimum."
+     * )
+     * 
+     */
+
+    private $new_password;
+
+    /**
+     * 
+     * @Assert\EqualTo(propertyPath="new_password", message="Confirmation de mot de passe incorrecte")
+     */
+    private $confirm_new_password;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -101,5 +118,45 @@ class User implements UserInterface
     public function getRoles()
     {
         return ['ROLE_USER'];
+    }
+
+    /**
+     * Get the value of new_password
+     */
+    public function getNewPassword()
+    {
+        return $this->new_password;
+    }
+
+    /**
+     * Set the value of new_password
+     *
+     * @return  self
+     */
+    public function setNewPassword($new_password)
+    {
+        $this->new_password = $new_password;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of confirm_new_password
+     */
+    public function getConfirmNewPassword()
+    {
+        return $this->confirm_new_password;
+    }
+
+    /**
+     * Set the value of confirm_new_password
+     *
+     * @return  self
+     */
+    public function setConfirmNewPassword($confirm_new_password)
+    {
+        $this->confirm_new_password = $confirm_new_password;
+
+        return $this;
     }
 }

@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\RegistrationType;
+use App\Form\UserDatasType;
 
+use App\Form\RegistrationType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
@@ -61,4 +62,29 @@ class SecurityController extends AbstractController
 
     public function logout()
     { }
+
+    /**
+     * @Route("/mesdonnees", name="security_datas")
+     */
+    public function changeUserDatas(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(UserDatasType::class, $user);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $hash = $encoder->encodePassword($user, $user->getNewPassword());
+            $user->setPassword($hash);
+
+            $manager->persist($user);
+            $manager->flush();
+
+            return $this->redirectToRoute('dashboard');
+        }
+
+        return $this->render('security/user_datas.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
 }
