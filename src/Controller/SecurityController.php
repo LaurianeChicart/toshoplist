@@ -2,14 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Memo;
 use App\Entity\User;
-use App\Form\UserDatasType;
 
+use App\Form\UserDatasType;
 use App\Form\RegistrationType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class SecurityController extends AbstractController
@@ -38,6 +40,7 @@ class SecurityController extends AbstractController
                 $manager->persist($user);
                 $manager->flush();
 
+
                 return $this->redirectToRoute('security_login');
             }
 
@@ -51,9 +54,18 @@ class SecurityController extends AbstractController
      * @Route("/connexion", name="security_login")
      */
 
-    public function login()
+    public function login(AuthenticationUtils $authenticationUtils)
     {
-        return $this->render('security/login.html.twig');
+        if ($this->getUser()) {
+            return $this->redirectToRoute('dashboard');
+        } else {
+            $error = $authenticationUtils->getLastAuthenticationError();
+            $lastUsername = $authenticationUtils->getLastUsername();
+            return $this->render('security/login.html.twig', [
+                'last_username' => $lastUsername,
+                'error' => $error
+            ]);
+        }
     }
 
     /**
@@ -64,27 +76,36 @@ class SecurityController extends AbstractController
     { }
 
     /**
-     * @Route("/mesdonnees", name="security_datas")
+     * @Route("/moncompte/mesdonnees", name="security_datas")
      */
     public function changeUserDatas(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
     {
         $user = $this->getUser();
         $form = $this->createForm(UserDatasType::class, $user);
+        $errorMessage = null;
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $hash = $encoder->encodePassword($user, $user->getNewPassword());
-            $user->setPassword($hash);
 
-            $manager->persist($user);
-            $manager->flush();
+            if ($encoder->isPasswordValid($user, $user->getCurrentPassword())) {
+                $hash = $encoder->encodePassword($user, $user->getNewPassword());
+                $user->setPassword($hash);
 
-            return $this->redirectToRoute('dashboard');
+                $manager->persist($user);
+                $manager->flush();
+
+                return $this->redirectToRoute('dashboard');
+            } else {
+                $errorMessage = "Mot de passe incorrect";
+            }
+        } else {
+            $errorMessage = null;
         }
 
         return $this->render('security/user_datas.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'errorMessage' => $errorMessage
         ]);
     }
 }

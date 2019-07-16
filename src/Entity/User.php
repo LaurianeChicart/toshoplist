@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -36,7 +38,11 @@ class User implements UserInterface
      *      min = 8,
      *      minMessage = "Le mot de passe doit comporter 8 caractères minimum."
      * )
-     * 
+     * @Assert\Regex(
+     *     pattern="/\s/",
+     *     match=false,
+     *     message="Le mot de passe ne doit pas contenir d'espace blanc."
+     * )
      */
 
     private $password;
@@ -44,15 +50,26 @@ class User implements UserInterface
     /**
      * 
      * @Assert\EqualTo(propertyPath="password", message="Confirmation de mot de passe incorrecte")
+     * 
      */
     private $confirm_password;
+
+    private $current_password;
 
     /**
      * @Assert\Length(
      *      min = 8,
      *      minMessage = "Le mot de passe doit comporter 8 caractères minimum."
      * )
+     * @Assert\Regex(
+     *     pattern="/\s/",
+     *     match=false,
+     *     message="Le mot de passe ne doit pas contenir d'espace blanc."
+     * )
      * 
+     * @Assert\NotEqualTo(propertyPath="current_password", message="Le mot de passe saisi est identique au mot de passe actuel.")
+     *
+     *
      */
 
     private $new_password;
@@ -62,6 +79,13 @@ class User implements UserInterface
      * @Assert\EqualTo(propertyPath="new_password", message="Confirmation de mot de passe incorrecte")
      */
     private $confirm_new_password;
+
+
+    /**
+     * 
+     * @ORM\OneToMany(targetEntity="App\Entity\Memo", mappedBy="user_id", orphanRemoval=true)
+     */
+    private $memos;
 
 
     public function getId(): ?int
@@ -156,6 +180,48 @@ class User implements UserInterface
     public function setConfirmNewPassword($confirm_new_password)
     {
         $this->confirm_new_password = $confirm_new_password;
+
+        return $this;
+    }
+
+    public function getCurrentPassword()
+    {
+        return $this->current_password;
+    }
+
+    public function setCurrentPassword($current_password)
+    {
+        $this->current_password = $current_password;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of memos
+     */
+    public function getMemos(): Collection
+    {
+        return $this->memos;
+    }
+    public function addMemo(Memo $memo): self
+    {
+        if (!$this->memos->contains($memo)) {
+            $this->memos[] = $memo;
+            $memo->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMemo(Memo $memo): self
+    {
+        if ($this->memos->contains($memo)) {
+            $this->memos->removeElement($memo);
+            // set the owning side to null (unless already changed)
+            if ($memo->getUser() === $this) {
+                $memo->setUser(null);
+            }
+        }
 
         return $this;
     }

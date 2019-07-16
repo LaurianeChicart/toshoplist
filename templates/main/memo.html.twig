@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}ToShopList - Mémo
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+
+            <h3>Mon mémo</h3>
+            <p>Les éléments que vous indiquer dans le mémo seront automatiquement rajoutés à votre liste de courses.</p>
+
+
+            {% if memoList %}
+
+                <ul class="list-unstyled" id="js-list">
+
+                    {% for memo in memoList %}
+                        <li>
+                            <p class="item">{{ memo.item }}
+                                <span>
+                                    <a class="btn btn-secondary close " href=" {{ path('delete_memo_item', {'id' : memo.id} ) }}">X</a>
+                                </span>
+                            </p>
+
+                        </li>
+                    {% endfor %}
+                </ul>
+
+            {% else %}
+
+
+                <p>Rien dans le mémo</p>
+            {% endif %}
+
+            {{ form_start(form, {'action': path('memo'), 'method': 'POST'}) }}
+            <div class="d-flex flex-row">
+                {{ form_widget(form) }}
+                <div>
+                    <button id="addItem" type="submit">+</button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+
+            <div class="text-right">
+                <a class=" btn btn-secondary" href=" {{ path('reset_memo') }} " id="reset">Vider le mémo</a>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

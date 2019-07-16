@@ -1,9 +1,61 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}ToShopList - Votre compte
+{% block title %}ToShopList - Mon compte
 {% endblock %}
 
 {% block body %}
     <h2>Mon espace</h2>
+    <div>
+        <button class="btn btn-success">Créer une ToShopList</button>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <h3>Ma dernière ToShopList</h3>
+            <p>
+                <a href="">Planning</a>
+                -
+                <a href="">Liste</a>
+                le xx/yy/zz</p>
+        </div>
+
+
+        <div class="col-lg-6">
+            <a class="text-decoration-none text-reset" href="{{ path('memo') }}">
+
+                <h3>Mon mémo</h3>
+                {% if memos|length > 0 %}
+                    <p>Contenu de mon mémo :</p>
+                    <ul class="list-unstyled">
+
+                        {% for memo in memos %}
+                            <li>{{ memo.item }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Rien dans le mémo</p>
+                {% endif %}
+            </a>
+            <div class="text-right">
+                <a class="btn btn-primary" href="{{ path('memo') }}">Modifier</a>
+
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <a class="text-decoration-none text-reset" href="#">
+                <h3>Mes recettes</h3>
+                <p>Vous avez :</p>
+                <ul class="list-unstyled">
+                    <li>x recettes de petit déjeuner</li>
+                    <li>y recettes de déjeuner/dîner</li>
+                </ul>
+            </a>
+            <div class="text-right">
+                <a class="btn btn-primary" href="#">Voir mes recettes</a>
+                <a class="btn btn-primary" href="#">Ajouter une recette</a>
+            </div>
+        </div>
+
+
+    </div>
 
 {% endblock %}
