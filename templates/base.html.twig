@@ -5,52 +5,54 @@
         <title>
             {% block title %}{% endblock %}
         </title>
+
         <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet"> {% block stylesheets %}{% endblock %}
-        </head>
-        <body>
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-                <div class="container">
-                    <a class="navbar-brand" href="{{ path('dashboard') }}">
-                        <img alt="Logo de ToShopList" src="http://placehold.it/150x50?text=Logo">
-                    </a>
-                    <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                        <ul class="navbar-nav mr-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Mes recettes
-                                    <span class="sr-only"></span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('memo') }}">Mémo</a>
+        <script crossorigin="anonymous" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script crossorigin="anonymous" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script crossorigin="anonymous" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/d36a8700a0.js"></script>
 
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Mes ToShopLists</a>
-                            </li>
-                        </ul>
-                        <span class="dropdown navbar-nav navbar-right">
-                            <a aria-expanded="false" aria-haspopup="true" class="nav-link nav-item dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdown" role="button">
-                                Mon compte
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+            <div class="container">
+                <a class="navbar-brand" href="{{ path('dashboard') }}">
+                    <img alt="Logo de ToShopList" src="http://placehold.it/150x50?text=Logo">
+                </a>
+                <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('recipes') }}">Mes recettes
+                                <span class="sr-only"></span>
                             </a>
-                            <div aria-labelledby="navbarDropdown" class="dropdown-menu">
-                                <a class="dropdown-item" href="{{ path('security_datas') }}">Mes données</a>
-                                <a class="dropdown-item" href="{{ path('security_logout') }}">Déconnexion</a>
-                            </div>
                         </li>
-                    </span>
-                </nav>
-                <div class="container"> {% block body %}{% endblock %}
-                    </div>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('memo') }}">Mémo</a>
 
-                    {% block javascripts %}
-                        <script crossorigin="anonymous" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-                        <script crossorigin="anonymous" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-                        <script crossorigin="anonymous" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-                        <script src="{{ asset('js/memo.js') }}"></script>
-                    {% endblock %}
-                </body>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Mes ToShopLists</a>
+                        </li>
+                    </ul>
+                    <span class="dropdown navbar-nav navbar-right">
+                        <a aria-expanded="false" aria-haspopup="true" class="nav-link nav-item dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdown" role="button">
+                            Mon compte
+                        </a>
+                        <div aria-labelledby="navbarDropdown" class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ path('security_datas') }}">Mes données</a>
+                            <a class="dropdown-item" href="{{ path('security_logout') }}">Déconnexion</a>
+                        </div>
+                    </li>
+                </span>
+            </nav>
+
+            <div class="container"> {% block body %}{% endblock %}
+                </div>
+
+
             </body>
-        </html>
+        </body>
+    </html>

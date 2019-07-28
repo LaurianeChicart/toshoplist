@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MemoRepository")
@@ -26,7 +25,7 @@ class Memo
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="memos")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $id_user;
+    private $user;
 
     public function getId(): ?int
     {
@@ -45,14 +44,14 @@ class Memo
         return $this;
     }
 
-    public function getIdUser(): ?User
+    public function getUser(): ?User
     {
-        return $this->id_user;
+        return $this->user;
     }
 
-    public function setIdUser(?User $user_id): self
+    public function setUser(?User $user_id): self
     {
-        $this->id_user = $user_id;
+        $this->user = $user_id;
 
         return $this;
     }

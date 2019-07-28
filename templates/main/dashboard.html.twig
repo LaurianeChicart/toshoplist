@@ -23,11 +23,11 @@
             <a class="text-decoration-none text-reset" href="{{ path('memo') }}">
 
                 <h3>Mon mémo</h3>
-                {% if memos|length > 0 %}
+                {% if user.memos|length > 0 %}
                     <p>Contenu de mon mémo :</p>
                     <ul class="list-unstyled">
 
-                        {% for memo in memos %}
+                        {% for memo in user.memos %}
                             <li>{{ memo.item }}</li>
                         {% endfor %}
                     </ul>
@@ -41,17 +41,27 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <a class="text-decoration-none text-reset" href="#">
+            <a class="text-decoration-none text-reset" href="{{ path('recipes') }}">
                 <h3>Mes recettes</h3>
-                <p>Vous avez :</p>
-                <ul class="list-unstyled">
-                    <li>x recettes de petit déjeuner</li>
-                    <li>y recettes de déjeuner/dîner</li>
-                </ul>
+
+                {% if user.recipes|length > 0 %}
+                    <p>Vous avez créé
+                        {{ user.recipes|length }}
+                        {% if user.recipes|length < 2 %}
+                            recette
+                        {% else %}
+                            recettes
+                        {% endif %}
+                    </p>
+
+                {% else %}
+                    <p>Aucune recette créée</p>
+                {% endif %}
+
             </a>
             <div class="text-right">
-                <a class="btn btn-primary" href="#">Voir mes recettes</a>
-                <a class="btn btn-primary" href="#">Ajouter une recette</a>
+                <a class="btn btn-primary" href="{{ path('recipes') }}">Voir mes recettes</a>
+                <a class="btn btn-primary" href="{{ path('create-recipe') }}">Ajouter une recette</a>
             </div>
         </div>
 

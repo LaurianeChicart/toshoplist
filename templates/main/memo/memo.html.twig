@@ -11,23 +11,20 @@
             <h3>Mon mémo</h3>
             <p>Les éléments que vous indiquer dans le mémo seront automatiquement rajoutés à votre liste de courses.</p>
 
-
-            {% if memoList %}
-
+            {% if user.memos %}
                 <ul class="list-unstyled" id="js-list">
-
-                    {% for memo in memoList %}
+                    {% for memo in user.memos %}
                         <li>
                             <p class="item">{{ memo.item }}
                                 <span>
-                                    <a class="btn btn-secondary close " href=" {{ path('delete_memo_item', {'id' : memo.id} ) }}">X</a>
+                                    <a class="btn btn-secondary btn-sm close" href=" {{ path('delete_memo_item', {'id' : memo.id} ) }}" title="Supprimer l'élément">
+                                        <span class="fas fa-times"></span>
+                                    </a>
                                 </span>
                             </p>
-
                         </li>
                     {% endfor %}
                 </ul>
-
             {% else %}
 
 
@@ -49,4 +46,12 @@
 
         </div>
     </div>
+    {% block javascripts %}
+        <script src="{{ asset('js/memo.js') }}"></script>
+        <script>
+            memo.constructor($('form[name="memo"]'), $(".js-addInput"), $("#js-list"), $(".close"), $("#reset"));
+        </script>
+
+    {% endblock %}
+
 {% endblock %}

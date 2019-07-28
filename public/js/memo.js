@@ -11,7 +11,7 @@ const memo = {
     // bouton pour vider la liste
     resetBtn: '',
 
-    init(form, input, list, xBtns, btn) {
+    constructor(form, input, list, xBtns, btn) {
         this.addForm = form;
         this.addInput = input;
         this.listInput = list;
@@ -66,7 +66,7 @@ const memo = {
             dataType: 'json',
 
             success: function (reponse) {
-                memo.listInput.append("<li><p class='item'>" + reponse.item + "<span><a class='btn btn-secondary close' href=' /moncompte/supprimer-element-memo/" + reponse.id + "'>X</a></span></p></li>");
+                memo.listInput.append("<li><p class='item'>" + reponse.item + "<span><a class='btn btn-secondary btn-sm close' href=' /moncompte/supprimer-element-memo/" + reponse.id + "'><span class='fas fa-times'></span></a></span></p></li>");
                 memo.addInput.val('');
             },
             complete: function () {
@@ -78,7 +78,7 @@ const memo = {
     }
 
 }
-memo.init($('form[name="memo"]'), $(".js-addInput"), $("#js-list"), $(".close"), $("#reset"));
+
 
 
 

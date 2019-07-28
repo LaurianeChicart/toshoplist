@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ToShopList - Ma recette
+{% endblock %}
+
+{% block body %}
+    <h2>{{ recipe.name }}</h2>
+    <p>{{ recipe.meal.type }}</p>
+    <p>Pour
+        {{ recipe.portionsNb }}
+        {% if recipe.portionsNb  < 2 %}
+            part
+        {% else %}
+            parts
+        {% endif %}
+    </p>
+    <ul>
+        {% for ingredient in recipe.recipeIngredients %}
+            <li>
+                {{ ingredient.quantity }}
+                {% if ingredient.measure != "unité" %}
+                    {{ ingredient.measure }}
+                    de
+                {% endif %}
+                {{ ingredient.ingredient.name }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% if recipe.instructions %}
+        <p>{{ recipe.instructions }}</p>
+    {% endif %}
+    {% if recipe.link %}
+        <p>{{ recipe.link }}</p>
+    {% endif %}
+
+    {% if recipe.image %}
+        <div><img alt='Image de "{{ recipe.name }}"' src="{{ asset('uploads/images/' ~ recipe.image) | imagine_filter('my_thumb')}}"></div>
+    {% endif %}
+
+    <br><div class="text-right">
+        <a class="btn btn-primary" href="{{ path('edit-recipe', {'id' : recipe.id}) }}" title="Modifier la recette">Modifier la recette</a>
+        <a class="btn btn-primary" href="{{ path('delete-recipe', {'id' : recipe.id}) }}" title="Supprimer la recette">Supprimer la recette</a>
+    </div>
+
+{% endblock %}

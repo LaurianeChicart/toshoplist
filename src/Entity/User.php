@@ -83,10 +83,20 @@ class User implements UserInterface
 
     /**
      * 
-     * @ORM\OneToMany(targetEntity="App\Entity\Memo", mappedBy="user_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Memo", mappedBy="user", orphanRemoval=true)
      */
     private $memos;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Recipe", mappedBy="user", orphanRemoval=true)
+     */
+    private $recipes;
+
+    public function __construct()
+    {
+        $this->memos = new ArrayCollection();
+        $this->recipes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -197,7 +207,7 @@ class User implements UserInterface
     }
 
     /**
-     * Get the value of memos
+     * @return Collection|Memos
      */
     public function getMemos(): Collection
     {
@@ -220,6 +230,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($memo->getUser() === $this) {
                 $memo->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Recipe[]
+     */
+    public function getRecipes(): Collection
+    {
+        return $this->recipes;
+    }
+
+    public function addRecipe(Recipe $recipe): self
+    {
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes[] = $recipe;
+            $recipe->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipe(Recipe $recipe): self
+    {
+        if ($this->recipes->contains($recipe)) {
+            $this->recipes->removeElement($recipe);
+            // set the owning side to null (unless already changed)
+            if ($recipe->getUser() === $this) {
+                $recipe->setUser(null);
             }
         }
 

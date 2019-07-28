@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ToShopList - Créer une recette
+{% endblock %}
+{% block stylesheets %}
+    <link href="{{asset('css/recipe-form.css')}}" rel="stylesheet">
+    <link href="{{asset('css/jquery-ui.min.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <h2>
+        {% if editMode %}
+            Modifier une recette
+        {% else %}
+            Créer une recette
+        {% endif %}
+    </h2>
+
+
+    {% form_theme recipeType
+       'jquery.collection.html.twig'
+        'recipe-theme.html.twig'   
+     %}
+    {{ form_start(recipeType) }}
+    <div class="form-row">
+        <div class="form-group col-md-5">
+            {{ form_row(recipeType.name) }}
+        </div>
+        <div class="form-group col-md-4">
+            {{ form_row(recipeType.meal) }}
+        </div>
+        <div class="form-group col-md-3">
+            {{ form_row(recipeType.portions_nb) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_row(recipeType.recipeIngredients) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(recipeType.instructions) }}</div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            {{ form_row(recipeType.link) }}
+        </div>
+        <div class="form-group col-md-6">
+            {{ form_row(recipeType.image) }}
+        </div>
+    </div>
+    <div class="text-center">
+        {% if image %}
+            <p>Image actuelle (avant enregistrement) :</p>
+            <div><img alt='Image associée à la recette' src="{{ asset('uploads/images/' ~ image) | imagine_filter('my_thumb')}}"></div>
+        {% endif %}
+    </div>
+
+    <small>* Champs obligatoires</small>
+
+    <div class="text-right">
+        <button class="btn btn-success" type="submit">
+            {% if editMode %}
+                Enregistrer les modifications
+            {% else %}
+                Ajouter la recette
+            {% endif %}
+        </button>
+    </div>
+    {{ form_end(recipeType) }}
+
+    <div
+        class="js-listIngredients" data-is-authenticated="{{ listIngredients }}"><!-- ... -->
+    </div>
+
+    {% block javascripts %}
+
+        <script src="{{ asset('js/jquery.collection.js') }}"></script>
+        <script src="{{asset('js/jquery-ui.min.js')}}"></script>
+        <script src="{{asset('js/add-recipe.js')}}"></script>
+        <script>
+            addRecipeForm.constructor($('.ingredient-collection'), '<a class="recipeType-collection-add btn btn-secondary" href="#" title="Ajouter un ingrédient"><span class="fas fa-plus"></span></a>', '<a class="recipeType-collection-remove btn btn-secondary btn-sm" href = "#" title="Supprimer un ingrédient"><span class="fas fa-times"></span></a>', $(".recipe_recipeIngredients-collection-rescue-add"), $("form[name='recipe']"), "recipe_name", "recipe_portions_nb", "recipe_image", "recipe_recipeIngredients_", "_quantity", "_ingredient_name", "_ingredient_department", "_ingredient_id", document.querySelector('.js-listIngredients').dataset.isAuthenticated);
+        </script>
+    {% endblock %}
+{% endblock %}

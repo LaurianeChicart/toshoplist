@@ -1,0 +1,11 @@
+ #recipe_recipeIngredients > div > label.required{
+    display: none;
+}
+#recipe_recipeIngredients > div > div.form-row{
+    margin-right: 0;
+    margin-left: 0;
+}
+#recipe_image{
+    height: 100%;
+    padding: 0;
+}

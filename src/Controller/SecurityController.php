@@ -34,9 +34,9 @@ class SecurityController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $hash = $encoder->encodePassword($user, $user->getPassword());
+                $hash = $encoder->encodePassword($user, htmlspecialchars($user->getPassword()));
                 $user->setPassword($hash);
-
+                $user->setEmail(htmlspecialchars($user->getEmail()));
                 $manager->persist($user);
                 $manager->flush();
 
@@ -83,21 +83,31 @@ class SecurityController extends AbstractController
         $user = $this->getUser();
         $form = $this->createForm(UserDatasType::class, $user);
         $errorMessage = null;
+        $originalEmail = $user->getEmail();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             if ($encoder->isPasswordValid($user, $user->getCurrentPassword())) {
-                $hash = $encoder->encodePassword($user, $user->getNewPassword());
-                $user->setPassword($hash);
-
+                if ($user->getNewPassword() != null) {
+                    $hash = $encoder->encodePassword($user, htmlspecialchars($user->getNewPassword()));
+                    $user->setPassword($hash);
+                }
+                if ($user->getEmail() != $originalEmail) {
+                    $user->setEmail(htmlspecialchars($user->getEmail()));
+                }
                 $manager->persist($user);
                 $manager->flush();
 
+                return $this->json([
+                    'message' => "Vos données de connection ont été mises à jour !",
+                ], 200);
+
                 return $this->redirectToRoute('dashboard');
             } else {
-                $errorMessage = "Mot de passe incorrect";
+                return $this->json([
+                    'message' => "Mot de passe incorrect",
+                ], 403);
             }
         } else {
             $errorMessage = null;
