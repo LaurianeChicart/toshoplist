@@ -19,7 +19,7 @@ class RecipeIngredientType extends AbstractType
         $builder
             ->add('quantity', NumberType::class, [
                 'trim' => true,
-                'attr' => ['class' => 'form-control', 'placeholder' => 'Ex: 1, 0.5...'],
+                'attr' => ['class' => 'form-control', 'placeholder' => 'Ex: 1, 0.5...', 'required' => true],
                 'label' => 'Quantité*',
                 'scale' => 2,
                 'input' => 'string'
@@ -39,7 +39,7 @@ class RecipeIngredientType extends AbstractType
                     'filet' => 'filet'
                 ],
                 'label' => 'Mesure*',
-                'attr' => ['class' => 'form-control']
+                'attr' => ['class' => 'form-control', 'required' => true]
             ])
             ->add('ingredient', IngredientType::class, [
                 'label' => false,

@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Meal;
 use App\Entity\Department;
 use App\Entity\Ingredient;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -47,7 +46,7 @@ class DepartmentFixtures extends Fixture
 
 
         $department3 = new Department();
-        $department3->setName("Viandes  et  poissons");
+        $department3->setName("Viandes et poissons");
         $manager->persist($department3);
         foreach ($viandes_et_poissons as  $viandes_et_poissons_item) {
             $ingredient = new Ingredient();
@@ -71,13 +70,6 @@ class DepartmentFixtures extends Fixture
         $department5 = new Department();
         $department5->setName("Divers");
         $manager->persist($department5);
-
-        $meals = ["Déjeuner/Dîner", "Petit-déjeuner"];
-        foreach ($meals as $meal_name) {
-            $meal = new Meal();
-            $meal->setType($meal_name);
-            $manager->persist($meal);
-        }
 
         $manager->flush();
     }

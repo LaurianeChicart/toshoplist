@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ToShopList - Ma ToShopList
+{% endblock %}
+{% block stylesheets %}
+    <link href="{{asset('css/show-list.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <br>
+    <div class="row">
+        <div class="col-6">
+            <h2>Ma ToShopList</h2>
+
+        </div>
+        <div class="col-6 text-right">
+            <a class=" btn btn-primary" href="{{ path('modify-shoplist', {'id' : listItems.id}) }}">Modifier la liste</a>
+
+        </div>
+    </div><br>
+
+
+    {% for department in list %}
+        <div class="border border-primary rounded">
+
+            <div class="col text-white font-weight-bold bg-primary p-2">
+                {{ department[0] }}
+            </div>
+
+            {% for item in department[1] %}
+                <div class="checklist m-2">
+                    <label class="item">
+                        {% if item.checked == 1 %}
+                            <input type="checkbox" id="{{ item.id }}" formaction="{{ path('check_memo_list', {'id' : item.id}) }}" class="check" checked>
+                            <span class="checkmark"></span>
+                            <span class="item-details completed">{{ item.quantities }}
+                                {{ item.name }}</span>
+                        {% else %}
+                            <input type="checkbox" id="{{ item.id }}" formaction="{{ path('check_memo_list', {'id' : item.id}) }}" class="check">
+                            <span class="checkmark"></span>
+                            <span class="item-details">{{ item.quantities }}
+                                {{ item.name }}</span>
+                        {% endif %}
+                    </label>
+                </div>
+            {% endfor %}
+
+        </div>
+        <br>
+    {% endfor %}
+
+    {% block javascripts %}
+        <script src="{{ asset('js/show-list.js') }}"></script>
+        <script>
+            shopList.constructor($('.check'), 'span.item-details');
+        </script>
+
+    {% endblock %}
+{% endblock %}

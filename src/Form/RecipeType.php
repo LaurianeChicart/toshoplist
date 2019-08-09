@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
@@ -23,19 +24,19 @@ class RecipeType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'trim' => true,
-                'attr' => ['placeholder' => 'Nom de la recette', 'class' => 'form-control'],
+                'attr' => ['placeholder' => 'Nom de la recette', 'class' => 'form-control', 'required' => true],
                 'label' => 'Nom*'
             ])
             ->add('meal', EntityType::class, [
                 'class' => Meal::class,
-                'attr' => ['class' => 'form-control'],
+                'attr' => ['class' => 'form-control', 'required' => true],
                 'choice_label' => 'type',
                 'label' => 'Type de repas*'
             ])
-            ->add('portions_nb', TextType::class, [
+            ->add('portions_nb', IntegerType::class, [
                 'trim' => true,
-                'attr' => ['placeholder' => 'Ex: 4', 'class' => 'form-control'],
-                'label' => 'Nombre de parts*'
+                'attr' => ['placeholder' => 'Ex: 4', 'class' => 'form-control', 'min' => 1, 'max' => 15, 'required' => true],
+                'label' => 'Nombre de parts*',
             ])
             ->add('recipeIngredients', CollectionType::class, [
                 'entry_type' => RecipeIngredientType::class,
@@ -52,22 +53,22 @@ class RecipeType extends AbstractType
             ])
             ->add('instructions', TextareaType::class, [
                 'trim' => true,
-                'required'   => false,
                 'attr' => ['placeholder' => 'Les étapes de la recette', 'class' => 'form-control', 'rows' => "5"],
-                'label' => 'Instructions'
+                'label' => 'Instructions',
+                'required' => false
             ])
             ->add('link', TextType::class, [
                 'trim' => true,
-                'required'   => false,
-                'attr' => ['placeholder' => 'Ex: http://recette-originale.fr ou Livre de recette p23', 'class' => 'form-control'],
-                'label' => 'Lien vers la recette originale'
+                'attr' => ['placeholder' => 'Ex: http://recette-originale.fr ou Livre de recette p23', 'class' => 'form-control', 'required' => false,],
+                'label' => 'Lien vers la recette originale',
+                'required' => false
             ])
             ->add('image', FileType::class, [
                 'trim' => true,
                 'label' => 'Image',
-                'attr' => ['placeholder' => 'Choisir une image', 'class' => 'form-control'],
-                'required'   => false,
+                'attr' => ['placeholder' => 'Choisir une image', 'class' => 'form-control', 'required' => false,],
                 'help' => 'Taille maximale : 1 Mo ',
+                'required' => false,
                 'data_class' => null,
                 'constraints' => [
                     new File([

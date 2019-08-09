@@ -1,0 +1,59 @@
+{% block item_label %}{% endblock %}
+
+
+{% block item_widget %}
+    <div class="form-row">
+        <div class="col-8 row">
+            <div class="col-6">
+                {{ form_row(form.quantities) }}
+            </div>
+            <div class="col-6">
+                {{ form_row(form.name) }}
+            </div>
+            {% if form.initial_quantities is defined %}
+                <div class="col-6">
+                    {{ form_row(form.initial_quantities) }}
+                </div>
+            {% endif %}
+            {{ form_row(form.position) }}
+
+        </div>
+        <div class="col-4 collection-actions row justify-content-around">
+            <div class="col">
+                <a class="btn btn-secondary collection-up" href="#" title="Monter ce produit">
+                    <span class="fas fa-arrow-up"></span>
+                </a>
+            </div>
+            <div class="col">
+                <a class="btn btn-secondary collection-down" href="#" title="Descendre ce produit">
+                    <span class="fas fa-arrow-down"></span>
+                </a>
+            </div>
+            <div class="col">
+                <a class="collection-remove btn btn-secondary" href="#" title="Supprimer ce produit">
+                    <span class="fas fa-times"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <br>
+{% endblock %}
+
+{% block listDepartment_row %}
+    <div class="m-2">
+        <div class="border border-primary rounded">
+            <div class=" text-white font-weight-bold bg-primary p-2 d-flex justify-content-between align-items-center">
+
+                <div class="label-department">
+                    {{ form_label(form) }}
+                </div>
+                <div class="form_listDepartment-parent-actions text-right"></div>
+            </div><br>
+            <div class="col">
+                {{ form_widget(form.items) }}
+            </div>
+            {{ form_row(form.position) }}
+        </div>
+    </div>
+
+{% endblock %}

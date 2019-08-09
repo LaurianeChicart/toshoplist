@@ -1,0 +1,36 @@
+{% block plannedMeal_label %}{% endblock %}
+{% block plannedMeal_widget %}
+    <div class="row">
+        <div class="col-4">
+            {{ form_row(form.description) }}
+        </div>
+        <div class="col-3">
+            {{ form_row(form.recipe) }}
+        </div>
+        <div class="col-3">
+            {{ form_row(form.portion) }}
+        </div>
+        <div class="col-2 d-flex justify-content-end align-items-end">
+            <a class="collection-remove btn btn-default btn-secondary" href="#" title="Supprimer ce repas">
+                <span class="fas fa-times"></span>
+            </a>
+        </div>
+    </div><br>
+{% endblock %}
+
+{% block day_row %}
+    <div class="m-2">
+        <div class="border border-primary rounded">
+            <div class=" text-white font-weight-bold bg-primary p-2 d-flex align-items-center">
+
+                <div class="label-day">
+                    {{ form_label(form) }}
+                </div>
+            </div><br>
+            <div class="col">
+                {{ form_widget(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

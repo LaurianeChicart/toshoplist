@@ -1,0 +1,63 @@
+{% block ingredientType_row %}
+    <div class="row">
+        <div class="col-6">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="col-6">
+            {{ form_row(form.department) }}
+        </div>
+    </div>
+    {{ form_row(form.id) }}
+
+{% endblock %}
+
+{% block recipeIngredientType_row %}
+    <div class="form-row col">
+        <div class="col-10 row">
+            <div class="col-2">
+                {{ form_row(form.quantity) }}
+            </div>
+            <div class="col-2">
+                {{ form_row(form.measure) }}
+            </div>
+            <div class="col-8">
+                {{ form_row(form.ingredient) }}
+            </div>
+        </div>
+        <div class="col-2 d-flex justify-content-end align-items-end">
+            <a class="collection-remove btn btn-default btn-secondary" href="#" title="Supprimer cet ingrédient">
+                <span class="fas fa-times"></span>
+            </a>
+        </div>
+    </div>
+    <br>
+{% endblock %}
+
+{% block recipe_label %}{% endblock %}
+
+{% block recipe_widget %}
+    <div class="form-row">
+        <div class="form-group col-md-5">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="form-group col-md-4">
+            {{ form_row(form.meal) }}
+        </div>
+        <div class="form-group col-md-3">
+            {{ form_row(form.portions_nb) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_row(form.recipeIngredients) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(form.instructions) }}</div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            {{ form_row(form.link) }}
+        </div>
+        <div class="form-group col-md-6">
+            {{ form_row(form.image) }}
+        </div>
+    </div>
+{% endblock %}

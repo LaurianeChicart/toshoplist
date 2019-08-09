@@ -30,10 +30,11 @@ class Ingredient
     private $department;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="ingredient")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
      */
     private $user;
+
+    private $userIsNull;
 
     public function getId(): ?int
     {
@@ -69,7 +70,7 @@ class Ingredient
         return $this;
     }
 
-    public function getUser(): ?int
+    public function getUser(): ?User
     {
         return $this->user;
     }
@@ -77,6 +78,26 @@ class Ingredient
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userIsNull
+     */
+    public function getUserIsNull()
+    {
+        return $this->userIsNull;
+    }
+
+    /**
+     * Set the value of userIsNull
+     *
+     * @return  self
+     */
+    public function setUserIsNull($userIsNull)
+    {
+        $this->userIsNull = $userIsNull;
 
         return $this;
     }

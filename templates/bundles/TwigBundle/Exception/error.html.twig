@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            ToShopList - Erreur
+        </title>
+
+        <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/d36a8700a0.js"></script>
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mx-auto">
+                    <h1>Oups, la requête a fait chou blanc !</h1>
+                    <h3>Le serveur a retourné "{{ status_code }}
+                        {{ status_text }}".</h3>
+                    {% if status_code == 404 %}
+                        <p>La page demandée n'existe pas.</p>
+                    {% elseif status_code == 403 %}
+                        <p>Vous ne pouvez pas accéder à la page demandée.</p>
+                    {% endif %}
+                    <p>
+                        <a href="{{ path('dashboard') }}">Retour au site</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

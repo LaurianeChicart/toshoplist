@@ -4,46 +4,66 @@
 {% endblock %}
 
 {% block body %}
-    <h2>Mes recettes</h2>
+    <br>
+    <div class="row">
+        <div class="col-6">
+            <h2>Mes recettes</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a class=" btn btn-primary" href=" {{ path('create-recipe') }} ">Ajouter une recette</a>
+        </div>
+    </div><br>
 
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        {% for myMeal in myMeals %}
+            <li class="nav-item">
+                {% if myMeal == myMeals[0] %}
+                    <a aria-controls="pills-{{ myMeal.id }}" aria-selected="true" class="nav-link active" data-toggle="pill" href="#pills-{{ myMeal.id }}" id="pills-{{ myMeal.id }}-tab" role="tab">{{ myMeal.type }}</a>
+                {% else %}
+                    <a aria-controls="pills-{{ myMeal.id }}" aria-selected="true" class="nav-link" data-toggle="pill" href="#pills-{{ myMeal.id }}" id="pills-{{ myMeal.id }}-tab" role="tab">{{ myMeal.type }}</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+        {% for myMeal in myMeals %}
 
-    {% for myMeal in myMeals %}
-        <div>
-            <h5>{{ myMeal.type}}</h5>
-            <div class="row">
-                {% for recipe in user.recipes if recipe.meal == myMeal %}
-                    <div class="col-lg-2 col-md-3 col-sm-4 col-6 ">
-                        <div class="card">
-                            {% if recipe.image %}
-                                <img alt='Image de "{{ recipe.name }}"' class="card-img-top" src="{{ asset('uploads/images/' ~ recipe.image) | imagine_filter('my_thumb')}}">
-                            {% else %}
-                                <img alt='Image de "{{ recipe.name }}"' class="card-img-top" src="https://placehold.it/120x90">
-                            {% endif %}
-                            <div class="card-body">
-                                <p class="card-title text-center">{{ recipe.name }}</p>
-                                <div class="text-center">
-                                    <a class="btn btn-secondary btn-sm" href="{{ path('show-recipe', {'id' : recipe.id}) }}" title="Voir la recette">
-                                        <span class="fas fa-book-open"></span>
-                                    </a>
-                                    <a class="btn btn-secondary btn-sm" href="{{ path('edit-recipe', {'id' : recipe.id}) }}" title="Modifier la recette">
-                                        <span class="fas fa-edit"></span>
-                                    </a>
-                                    <a class="btn btn-secondary btn-sm" href="{{ path('delete-recipe', {'id' : recipe.id}) }}" title="Supprimer la recette">
-                                        <span class="fas fa-trash-alt"></span>
-                                    </a>
+            <div aria-labelledby="pills-{{ myMeal.id }}-tab" {% if myMeal == myMeals[0] %} class="tab-pane fade active show" {% else %} class="tab-pane fade" {% endif %} id="pills-{{ myMeal.id }}" role="tabpanel">
+                <div class="row">
+                    {% for recipe in user.recipes if recipe.meal == myMeal %}
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-6 ">
+                            <div class="card">
+                                {% if recipe.image %}
+                                    <img alt='Image de "{{ recipe.name }}"' class="card-img-top" src="{{ asset('uploads/images/' ~ recipe.image) | imagine_filter('my_thumb')}}">
+                                {% else %}
+                                    <img alt='Image de "{{ recipe.name }}"' class="card-img-top" src="https://placehold.it/120x90">
+                                {% endif %}
+                                <div class="card-body">
+                                    <p class="card-title text-center">{{ recipe.name }}</p>
+                                    <div class="text-center">
+                                        <a class="btn btn-secondary btn-sm" href="{{ path('show-recipe', {'id' : recipe.id}) }}" title="Voir la recette">
+                                            <span class="fas fa-book-open"></span>
+                                        </a>
+                                        <a class="btn btn-secondary btn-sm" href="{{ path('edit-recipe', {'id' : recipe.id}) }}" title="Modifier la recette">
+                                            <span class="fas fa-edit"></span>
+                                        </a>
+                                        <a class="btn btn-secondary btn-sm" href="{{ path('delete-recipe', {'id' : recipe.id}) }}" title="Supprimer la recette">
+                                            <span class="fas fa-trash-alt"></span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                {% else %}
-                    <div class="col">
-                        <p>Pas de recette dans cette catégorie actuellement.</p>
-                    </div>
-                {% endfor %}
+                    {% else %}
+                        <div class="col">
+                            <p>Pas de recette dans cette catégorie actuellement.</p>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
-        </div><br>
-    {% endfor %}
-    <div class="text-right">
-        <a class="btn btn-primary" href="{{ path('create-recipe') }}">Ajouter une recette</a>
+        {% endfor %}
+
     </div>
+
+
 {% endblock %}

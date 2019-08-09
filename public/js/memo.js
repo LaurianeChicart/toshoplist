@@ -1,14 +1,9 @@
 const memo = {
 
-    // le formulaire
     addForm: '',
-    // l'input d'ajout
     addInput: '',
-    // liste des items
     listInput: '',
-    // bouton pour supprimer un élément
     deleteBtns: '',
-    // bouton pour vider la liste
     resetBtn: '',
 
     constructor(form, input, list, xBtns, btn) {
@@ -49,8 +44,8 @@ const memo = {
         $.ajax({
             url: url,
             success: memo.listInput.empty()
-
         });
+
     },
 
     addItem(e) {

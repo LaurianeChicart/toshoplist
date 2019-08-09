@@ -17,21 +17,20 @@ class IngredientType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'attr' => ['placeholder' => 'Nom', 'class' => 'form-control ui-widget'],
+                'trim' => true,
+                'attr' => ['placeholder' => 'Nom', 'class' => 'form-control ui-widget', 'required' => true],
                 'label' => 'Nom*',
-                'required'   => false
             ])
             ->add('department', EntityType::class, [
                 'class' => Department::class,
                 'choice_label' => 'name',
-                'attr' => ['class' => 'form-control ui-widget-department'],
+                'attr' => ['class' => 'form-control ui-widget-department', 'required' => true],
                 'label' => 'Rayon*',
-                'required'   => false,
                 'placeholder' => 'Sélectionner...',
             ])
             ->add('id', HiddenType::class, [
-                'required'   => false,
-                'attr' => ['class' => 'ui-widget-id', 'disabled' => 'disabled'],
+                'attr' => ['class' => 'form-control ui-widget-department', 'required' => false],
+                'attr' => ['class' => 'ui-widget-id'],
 
             ]);
     }

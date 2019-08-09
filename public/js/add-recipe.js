@@ -4,6 +4,7 @@ const addRecipeForm = {
     addBtnDesc: '',
     removeBtnDesc: '',
     addBtn: '',
+    removeBtns: '',
     form: '',
     nameId: '',
     portionsNbId: '',
@@ -14,18 +15,19 @@ const addRecipeForm = {
     departmentSuffix: '',
     idSuffix: '',
     listIngredients: '',
-    counterIngredients: 0,
+    counterIngredients: '',
     $availableTags: '',
     portionsNb: '',
     name: '',
     image: '',
 
-    constructor(collection, addBtnDesc, removeBtnDesc, addBtn, form, nameId, portionsNbId, imageId, ingredientPrefixe, quantitySuffix, nameSuffix, departmentSuffix, idSuffix, listIngredients) {
+    constructor(collection, addBtnDesc, removeBtnDesc, addBtn, removeBtns, form, nameId, portionsNbId, imageId, ingredientPrefixe, quantitySuffix, nameSuffix, departmentSuffix, idSuffix, listIngredients) {
 
         this.collection = collection;
         this.addBtnDesc = addBtnDesc;
         this.removeBtnDesc = removeBtnDesc;
         this.addBtn = addBtn;
+        this.removeBtns = removeBtns;
         this.form = form;
         this.nameId = nameId;
         this.portionsNbId = portionsNbId;
@@ -36,6 +38,12 @@ const addRecipeForm = {
         this.departmentSuffix = departmentSuffix;
         this.idSuffix = idSuffix;
         this.listIngredients = listIngredients;
+        this.counterIngredients = this.collection.children("div").length;
+        // en cas de création de recette, sa valeur sera 0, en cas de modification, elle sera de 1 minimum
+        // comme on souhaite se servir de this.counterIngredients comme index de la collection d'ingrédient, le 1er sera ingredient[0] 
+        if (this.counterIngredients != 0) {
+            this.counterIngredients--;
+        }
 
         //symfony collection jquery plugin
         this.collection.collection({
@@ -57,65 +65,88 @@ const addRecipeForm = {
         this.name = $("#" + this.nameId);
         this.image = document.getElementById(this.imageId);
 
-        //activation de l'autocomplete
-        this.activeAutocomplete(this.counterIngredients);
 
         //mise en place de vérification de saisie au blur sur chaque champ du formulaire
         this.name.change(this.checkName);
         this.portionsNb.change(this.checkPortionsNb);
         this.image.addEventListener("change", this.checkImage);
 
-        let $quantity = $("#" + this.ingredientPrefixe + 0 + this.quantitySuffix);
-        let $nameIngredient = $("#" + this.ingredientPrefixe + 0 + this.nameSuffix);
-        let $department = $("#" + this.ingredientPrefixe + 0 + this.departmentSuffix);
-
-        $quantity.blur(function () {
-            addRecipeForm.checkQuantity(0);
-        });
-        $nameIngredient.blur(function () {
-            addRecipeForm.checkNameIngredient(0);
-        });
-        $department.blur(function () {
-            addRecipeForm.checkDepartment(0);
-        });
         this.form.submit(this.checkForm);
+
+        //mise en place de l'autocomplétion et la vérification au blur de tous les champs ingrédients existants à l'affichage du formulaire
+        for (var k = 0; k <= this.counterIngredients; k++) {
+            this.activeAutocomplete(k);
+
+            if ($("#" + this.ingredientPrefixe + k + this.idSuffix).val() != "") {
+                let id = $("#" + this.ingredientPrefixe + k + this.idSuffix).val();
+                $.each(this.availableTags, function (j, obj) {
+                    if (id == obj.value) {
+                        if (obj.userIsNull == true) {
+                            $("#" + addRecipeForm.ingredientPrefixe + k + addRecipeForm.departmentSuffix).val(obj.department.value);
+                            $("#" + addRecipeForm.ingredientPrefixe + k + addRecipeForm.departmentSuffix).attr("disabled", "disabled");
+                        }
+                    }
+                });
+            }
+        }
 
         //à l'ajout d'un nouveau formulaire d'ingrédient, on lui applique l'autocomplete et la vérification de saisie au blur
         $(".recipe_recipeIngredients-collection-rescue-add").click(function () {
             addRecipeForm.counterIngredients++;
             setTimeout(function () {
                 addRecipeForm.activeAutocomplete(addRecipeForm.counterIngredients);
-
-                let $newQuantity = $("#" + addRecipeForm.ingredientPrefixe + addRecipeForm.counterIngredients + addRecipeForm.quantitySuffix);
-                let $newNameIngredient = $("#" + addRecipeForm.ingredientPrefixe + addRecipeForm.counterIngredients + addRecipeForm.nameSuffix);
-                let $newDepartment = $("#" + addRecipeForm.ingredientPrefixe + addRecipeForm.counterIngredients + addRecipeForm.departmentSuffix);
-
-                $newQuantity.change(function () {
-                    addRecipeForm.checkQuantity(addRecipeForm.counterIngredients);
-                });
-                $newNameIngredient.change(function () {
-                    addRecipeForm.checkNameIngredient(addRecipeForm.counterIngredients);
-                });
-                $newDepartment.blur(function () {
-                    addRecipeForm.checkDepartment(addRecipeForm.counterIngredients);
-                });
-
             }, 500);
         });
 
+        //à la suppression d'un ingrédient, on met à jour le compteur et on supprime les messages d'erreur ingrédient
+        let removeButtons = document.getElementsByClassName(this.removeBtns);
+        if (removeButtons.length > 0) {
+            for (let j = 0; j < removeButtons.length; j++) {
+                removeButtons[j].addEventListener("click", addRecipeForm.updateRemoveBtns);
+            }
+        }
+    },
+
+    updateRemoveBtns() {
+        var $invalidSpans = $("#recipe_recipeIngredients").prevAll("span.invalid-feedback");
+        if ($invalidSpans.length > 0) {
+            $invalidSpans.each(function () {
+                $(this).remove();
+            });
+        }
     },
 
     // jquery ui interface autocomplete
     activeAutocomplete(i) {
-        $("#" + this.ingredientPrefixe + this.counterIngredients + this.nameSuffix).blur(function () {
-            addRecipeForm.ckeckListIngredients(addRecipeForm.counterIngredients);
+        $("#" + this.ingredientPrefixe + i + this.nameSuffix).blur(function () {
+            addRecipeForm.ckeckListIngredients(i);
         });
+        //gestion des accents
+        var normalize = function (term) {
+            var accentMap = {
+                "À": "A", "Á": "A", "Â": "A", "Ã": "A", "Ä": "A", "Å": "A", "à": "a", "á": "a", "â": "a", "ã": "a", "ä": "a", "å": "a", "Ò": "O", "Ó": "O", "Ô": "O", "Õ": "O", "Õ": "O", "Ö": "O", "Ø": "O", "ò": "o", "ó": "o", "ô": "o", "õ": "o", "ö": "o", "ø": "o", "È": "E", "É": "E", "Ê": "E", "Ë": "E", "è": "e", "é": "e", "ê": "e", "ë": "e", "ð": "e", "Ç": "C", "ç": "c", "Ð": "D", "Ì": "I", "Í": "I", "Î": "I", "Ï": "I", "ì": "i", "í": "i", "î": "i", "ï": "i", "Ù": "U", "Ú": "U", "Û": "U", "Ü": "U", "ù": "u", "ú": "u", "û": "u", "ü": "u", "Ñ": "N", "ñ": "n", "Š": "S", "š": "s", "Ÿ": "Y", "ÿ": "y", "ý": "y", "Ž": "Z", "ž": "z"
+            };
+            var ret = "";
+            for (var i = 0; i < term.length; i++) {
+                ret += accentMap[term.charAt(i)] || term.charAt(i);
+            }
+            return ret;
+        };
         $("#" + this.ingredientPrefixe + i + this.nameSuffix).autocomplete({
-            minLength: 0,
-            source: this.availableTags,
+            minLength: 1,
+            source: function (request, response) {
+                var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+                response($.grep(addRecipeForm.availableTags, function (value) {
+                    value = value.label || value.value || value;
+                    return matcher.test(value) || matcher.test(normalize(value));
+                }));
+            },
+            focus: function (event, ui) {
+                $("#" + this.ingredientPrefixe + i + this.nameSuffix).val(ui.item.label);
+                return false;
+            },
             select: function (event, ui) {
                 addRecipeForm.fillFieldsAtAutocompletion(ui.item.label, ui.item.department.value, ui.item.value, i);
-
                 return false;
             },
             open: function (event, ui) {
@@ -125,6 +156,7 @@ const addRecipeForm = {
             },
         });
     },
+
 
     ckeckListIngredients(i) {
         // au blur, on veut vérifier si la valeur du champ 'ingrédient' correspond à un élément du tableau JSON
@@ -226,25 +258,7 @@ const addRecipeForm = {
 
     checkForm(e) {
 
-        for (i = 0; i <= addRecipeForm.counterIngredients; i++) {
-            let $department = $("#" + addRecipeForm.ingredientPrefixe + i + addRecipeForm.departmentSuffix);
-            let $id = $("#" + addRecipeForm.ingredientPrefixe + i + addRecipeForm.idSuffix);
 
-            addRecipeForm.deleteErrorMessageIngredient(addRecipeForm.ingredientPrefixe + i + addRecipeForm.departmentSuffix);
-
-            if (addRecipeForm.checkQuantity(i) == false) {
-                e.preventDefault();
-            }
-            if (addRecipeForm.checkNameIngredient(i) == false) {
-                e.preventDefault();
-            }
-            //si l'id de l'ingrédient n'est pas défini, il faut obligatoirement que le rayon le soit
-            if ($id.val() == '' && $department.val() == '') {
-                e.preventDefault();
-                addRecipeForm.showErrorMessageIngredient(addRecipeForm.ingredientPrefixe + i + addRecipeForm.departmentSuffix, " Un rayon doit être sélectionné pour chaque ingrédient.");
-            }
-
-        }
         if (addRecipeForm.checkName() == false) {
             e.preventDefault();
         }
@@ -256,36 +270,76 @@ const addRecipeForm = {
                 e.preventDefault();
             }
         }
+        //les index de la collection ne sont pas forcément linéaires ex: 0, 1, 3 (en cas de suppression du 2 lors d'une modification de recette)
+        //on cherche donc à récupérer les index existants à la validation du formulaire pour vérifier leurs valeurs d'inputs
+        var listIndexIngredients = [];
+        let allIngredients = $("input[id*='" + addRecipeForm.quantitySuffix + "']");
+
+        let $invalidSpans = $("#recipe_recipeIngredients").prevAll("span.invalid-feedback");
+        if ($invalidSpans.length > 0) {
+            $invalidSpans.each(function () {
+                $(this).remove();
+            });
+        }
+
+        allIngredients.each(function () {
+            let id = $(this).attr('id');
+            let array = id.split("_");
+            let index = array[2];
+            listIndexIngredients.push(index);
+        });
+
+        for (var i = 0; i < listIndexIngredients.length; i++) {
+            let $department = $("#" + addRecipeForm.ingredientPrefixe + listIndexIngredients[i] + addRecipeForm.departmentSuffix);
+
+            addRecipeForm.deleteErrorMessageIngredient(addRecipeForm.ingredientPrefixe + listIndexIngredients[i] + addRecipeForm.departmentSuffix);
+
+            if (addRecipeForm.checkQuantity(listIndexIngredients[i]) == false) {
+                e.preventDefault();
+            }
+            if (addRecipeForm.checkNameIngredient(listIndexIngredients[i]) == false) {
+                e.preventDefault();
+            }
+            $department.removeAttr('disabled');
+
+            if (addRecipeForm.checkDepartment(listIndexIngredients[i]) == false) {
+                e.preventDefault();
+                $department.attr('disabled')
+
+            }
+        };
     },
 
     //gestion des messages d'erreur des champs généraux
     showErrorMessage(inputName, message) {
-        var $label = $("label[for=" + inputName + "]");
-        var $errorMessage = "<span class='invalid-feedback d-block'><span class='d-block'><span class='form-error-icon badge badge-danger text-uppercase'>Erreur</span><span class='form-error-message'> " + message + "</span></span></span>";
+        let $label = $("label[for=" + inputName + "]");
+        let $errorMessage = "<span class='invalid-feedback d-block'><span class='d-block'><span class='form-error-icon badge badge-danger text-uppercase'>Erreur</span><span class='form-error-message'> " + message + "</span></span></span>";
         $label.append($errorMessage);
-        var $input = $("input[id=" + inputName + "]");
+        let $input = $("input[id=" + inputName + "]");
         $input.addClass("is-invalid");
+        window.scrollTo(0, 0);
     },
     deleteErrorMessage(inputName) {
         if ($("label[for=" + inputName + "] span.invalid-feedback").length > 0) {
-            var $errorMessageSpan = $("label[for=" + inputName + "] span.invalid-feedback");
+            let $errorMessageSpan = $("label[for=" + inputName + "] span.invalid-feedback");
             $errorMessageSpan.remove();
-            var $input = $("input[id=" + inputName + "]");
+            let $input = $("input[id=" + inputName + "]");
             $input.removeClass("is-invalid");
         }
     },
 
     //gestion des messages d'erreur des champs de la collection d'ingrédients
     showErrorMessageIngredient(inputId, message) {
-        var $ingredientsGroup = $("div.ingredient-collection");
-        var $errorMessage = "<span class='invalid-feedback " + inputId + " d-block'><span class='d-block'><span class='form-error-icon badge badge-danger text-uppercase'>Erreur</span><span class='form-error-message'> " + message + "</span></span></span>";
+        let $ingredientsGroup = $("div.ingredient-collection");
+        let $errorMessage = "<span class='invalid-feedback " + inputId + " d-block'><span class='d-block'><span class='form-error-icon badge badge-danger text-uppercase'>Erreur</span><span class='form-error-message'> " + message + "</span></span></span>";
         $ingredientsGroup.before($errorMessage);
-        var $input = $("#" + inputId);
+        let $input = $("#" + inputId);
         $input.addClass("is-invalid");
+        window.scrollTo(0, 0);
     },
     deleteErrorMessageIngredient(inputId) {
-        var $invalidSpans = $("#recipe_recipeIngredients").prevAll("span." + inputId);
-        var $input = $("#" + inputId);
+        let $invalidSpans = $("#recipe_recipeIngredients").prevAll("span." + inputId);
+        let $input = $("#" + inputId);
         if ($invalidSpans.length > 0) {
             $invalidSpans.each(function () {
                 $(this).remove();

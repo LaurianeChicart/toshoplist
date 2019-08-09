@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ToShopList - Mes plannings
+{% endblock %}
+{% block stylesheets %}
+    <link href="{{asset('')}}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <br>
+    <div class="row">
+        <div class="col-6">
+            <h2>Mes plannings</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a class=" btn btn-primary" href=" {{ path('create-planning') }} ">Créer un planning</a>
+        </div>
+    </div><br>
+
+    <div class="row">
+        <div class="col">
+
+            {% if user.plannings|length == 0 %}
+                <p>Créez votre premier planning !</p>
+            {% else %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Créé le
+                            </th>
+                            <th scope="col">Voir ou modifier le planning</th>
+                            <th scope="col">Planning au format PDF</th>
+                            <th scope="col">Voir ou modifier la liste</th>
+                            <th scope="col">Supprimer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for planning in user.plannings|reverse %}
+                            <tr>
+                                <th>
+                                    {{ planning.createdAt | date('d/m/Y')}}
+                                </th>
+                                <th>
+                                    <a href="{{ path('fill-planning', {'id' : planning.id}) }}">Planning</a>
+                                </th>
+                                <th>
+                                    {% if planning.listItems %}
+                                        <a href="{{ path('planning-pdf', {'id' : planning.id}) }}">PDF</a>
+                                    {% endif %}
+                                </th>
+                                <th>
+                                    {% if planning.listItems %}
+                                        <a href="{{ path('shoplist', {'id' : planning.listItems.id}) }}">ToShopList</a>
+                                    {% endif %}
+                                </th>
+                                <th>
+                                    <a href="{{ path('remove-shoplist', {'id' : planning.id}) }}" class="btn btn-secondary btn-sm float-right" title="Supprimer le planning et sa liste">
+                                        <span class="fas fa-trash-alt"></span>
+                                    </a>
+                                </th>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

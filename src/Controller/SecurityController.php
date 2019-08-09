@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Memo;
 use App\Entity\User;
 
 use App\Form\UserDatasType;
@@ -39,7 +38,6 @@ class SecurityController extends AbstractController
                 $user->setEmail(htmlspecialchars($user->getEmail()));
                 $manager->persist($user);
                 $manager->flush();
-
 
                 return $this->redirectToRoute('security_login');
             }

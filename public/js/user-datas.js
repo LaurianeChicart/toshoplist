@@ -11,7 +11,7 @@ const userDatasForm = {
         this.currentPassword = currentPassword;
         this.newPassword = newPassword;
         this.confirmNewPassword = confirmNewPassword;
-        form.on("submit", userDatasForm.checkForm);
+        this.form.on("submit", userDatasForm.checkForm);
         $("#" + this.email).on("blur", userDatasForm.checkEmail);
         $("#" + this.newPassword).on("blur", userDatasForm.checkNewPassword);
         $("#" + this.confirmNewPassword).on("blur", userDatasForm.checkConfirmNewPassword);
@@ -20,29 +20,29 @@ const userDatasForm = {
     checkEmail() {
         userDatasForm.deleteErrorMessage(userDatasForm.email);
         var regexMail = /^[a-zA-Z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$/;
-        let email = document.getElementById(userDatasForm.email);
-        if (!regexMail.test($.trim(email.value))) {
+        let email = $("#" + userDatasForm.email);
+        if (!regexMail.test($.trim(email.val()))) {
             userDatasForm.showErrorMessage(userDatasForm.email, "Adresse email invalide");
             return false;
         }
     },
     checkNewPassword() {
         userDatasForm.deleteErrorMessage(userDatasForm.newPassword);
-        let newPassword = document.getElementById(userDatasForm.newPassword);
-        if (newPassword.value.indexOf(" ") > 0) {
+        let newPassword = $("#" + userDatasForm.newPassword);
+        if (newPassword.val().indexOf(" ") > 0) {
             userDatasForm.showErrorMessage(userDatasForm.newPassword, "Le mot de passe ne peut pas contenir d'espace");
             return false;
         }
-        if (newPassword.value.length < 8) {
+        if (newPassword.val().length < 8 && newPassword.val().length > 0) {
             userDatasForm.showErrorMessage(userDatasForm.newPassword, "Le mot de passe doit avoir 8 caractères minimum");
             return false;
         }
     },
     checkConfirmNewPassword() {
         userDatasForm.deleteErrorMessage(userDatasForm.confirmNewPassword);
-        let newPassword = document.getElementById(userDatasForm.newPassword);
-        let confirmNewPassword = document.getElementById(userDatasForm.confirmNewPassword);
-        if (confirmNewPassword.value != newPassword.value) {
+        let newPassword = $("#" + userDatasForm.newPassword);
+        let confirmNewPassword = $("#" + userDatasForm.confirmNewPassword);
+        if (confirmNewPassword.val() != newPassword.val()) {
             userDatasForm.showErrorMessage(userDatasForm.confirmNewPassword, "Confirmation incorrecte");
             return false;
         }
@@ -59,9 +59,9 @@ const userDatasForm = {
         if (userDatasForm.checkEmail() == false) {
             e.preventDefault();
         }
-        let newPassword = document.getElementById(userDatasForm.newPassword);
-        let confirmNewPassword = document.getElementById(userDatasForm.confirmNewPassword);
-        if (newPassword.value != "" && confirmNewPassword.value != "") {
+        let newPassword = $("#" + userDatasForm.newPassword);
+        let confirmNewPassword = $("#" + userDatasForm.confirmNewPassword);
+        if (newPassword.val() != "" && confirmNewPassword.val() != "") {
             if (userDatasForm.checkNewPassword() == false) {
                 e.preventDefault();
             }
@@ -82,6 +82,10 @@ const userDatasForm = {
             success: function (reponse) {
                 let $successMessage = $("<p class='valid-feedback d-block'><span class='d-block'><span class='form-success-icon badge badge-success text-uppercase'>Succès</span><span class='form-success-message'> " + reponse.message + "</span></span></p>");
                 $successMessage.prependTo(userDatasForm.form);
+                $("#" + userDatasForm.currentPassword).val('');
+                $("#" + userDatasForm.newPassword).val('');
+                $("#" + userDatasForm.confirmNewPassword).val('');
+
             },
             error: function (reponse) {
                 let $noSuccessMessage = $("<p class='invalid-feedback d-block'><span class='d-block'><span class='form-error-icon badge badge-danger text-uppercase'>Erreur</span><span class='form-error-message'>Mot de passe incorrect</span></span></p>");

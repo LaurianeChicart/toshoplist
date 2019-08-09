@@ -42,6 +42,8 @@ class RecipeIngredient
      */
     private $ingredient;
 
+    private $mealQuantity;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,6 +93,26 @@ class RecipeIngredient
     public function setIngredient(?Ingredient $ingredient): self
     {
         $this->ingredient = $ingredient;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of mealQuantity
+     */
+    public function getMealQuantity()
+    {
+        return $this->mealQuantity;
+    }
+
+    /**
+     * Set the value of mealQuantity
+     *
+     * @return  self
+     */
+    public function setMealQuantity($mealQuantity)
+    {
+        $this->mealQuantity = $mealQuantity;
 
         return $this;
     }

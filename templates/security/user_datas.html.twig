@@ -15,7 +15,8 @@
                 <span class="invalid-feedback d-block">
                     <span class="d-block">
                         <span class="form-error-icon badge badge-danger text-uppercase">Error</span>
-                        <span class="form-error-message">{{ errorMessage }}</span>
+                        <span class="form-error-message">
+                            {{ errorMessage }}</span>
                     </span>
                 </span>
             {% endif %}
@@ -32,6 +33,7 @@
         <script src="{{asset('js/user-datas.js')}}"></script>
         <script>
             userDatasForm.constructor($("form[name='user_datas']"), "user_datas_email", "user_datas_current_password", "user_datas_new_password", "user_datas_confirm_new_password");
+            // userDatasForm = new UserDatasForm("form[name='user_datas']", "user_datas_email", "user_datas_current_password", "user_datas_new_password", "user_datas_confirm_new_password");
         </script>
     {% endblock %}
 

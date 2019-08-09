@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ToShopList - Modifier ma ToShopList
+{% endblock %}
+{% block stylesheets %}
+    <link href="{{asset('css/jquery-ui.min.css')}}" rel="stylesheet">
+{% endblock %}
+
+
+{% block body %}
+    <br>
+    <h2>Modifier ma ToShopList</h2>
+    <p>Sur cette page vous retrouvez tous les ingrédients nécessaires à la réalisation des recettes prévues dans le planning ainsi que le contenu de votre mémo. La liste est modulable. En effet, vous pouvez :
+    </p>
+    <ul>
+        <li>ajuster les quantités qui apparaîtront sur la liste de course pour chaque élément en fonction de vos besoins. Pour vous y aider, les quantités initiales par repas (avant cumul) sont indiquées sous chaque ingrédient.
+        </li>
+        <li>ajouter, supprimer ou déplacer les éléments dans leur rayon</li>
+        <li>déplacer les rayons dans l'ordre que vous souhaitez</li>
+    </ul>
+    <p>N'oubliez pas d'enregistrer vos modifications !</p><br>
+    {%
+        form_theme form
+     'jquery.collection.html.twig'
+    'list-theme.html.twig'
+
+    %}
+    {{ form(form) }}
+
+        <div class="js-listDepartment" data-is-authenticated="{{ departmentNames }}"></div>
+
+
+        {% block javascripts %}
+            <script src="{{ asset('js/jquery.collection.js') }}"></script>
+            <script src="{{asset('js/jquery-ui.min.js')}}"></script>
+            <script src="{{ asset('js/modify-list.js') }}"></script>
+            <script>
+                listForm.constructor($('.department-collection'), '.my-position-department', '.item-collection', '.my-position-item', $('.label-department label'), JSON.parse(document.querySelector('.js-listDepartment').dataset.isAuthenticated), "form[name='form']", $(".item-name"));
+            </script>
+
+        {% endblock %}
+    {% endblock %}

@@ -9,7 +9,7 @@ const registrationForm = {
         this.email = email;
         this.password = password;
         this.confirmPassword = confirmPassword;
-        form.on("submit", registrationForm.checkForm);
+        this.form.on("submit", registrationForm.checkForm);
         $("#" + this.email).on("blur", registrationForm.checkEmail);
         $("#" + this.password).on("blur", registrationForm.checkPassword);
         $("#" + this.confirmPassword).on("blur", registrationForm.checkConfirmPassword);

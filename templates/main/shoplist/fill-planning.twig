@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ToShopList - Créer planning
+{% endblock %}
+{% block stylesheets %}{% endblock %}
+
+{% block body %}
+    <br>
+    <h2>Créer un planning</h2><br>
+
+    {%
+        form_theme form
+    'jquery.collection.html.twig'
+            'planning-theme.html.twig'
+    %}
+
+    {{ form(form) }}
+
+        <div
+            class="js-listDays" data-is-authenticated="{{ dates }}"><!-- ... -->
+        </div>
+        {% if editMode %}
+            <div
+                class="js-editMode" data-is-authenticated="1"><!-- ... -->
+            </div>
+        {% else %}
+            <div
+                class="js-editMode" data-is-authenticated="0"><!-- ... -->
+            </div>
+
+        {% endif %}
+
+        {% if editMode %}
+            <!-- Modal -->
+            <div aria-hidden="true" aria-labelledby="modal-submit" class="modal fade" id="modal-submit" role="dialog" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-submit-title">Enregistrer les modifications ?</h5>
+                            <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Si vous enregistrez les modifications du planning, la liste de courses sera réinitialisée et les potentiels changements apportés à celle-ci seront perdus.
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal" type="button">Annuler</button>
+                            <button class="btn btn-primary" id="confirm-submit" type="submit">Continuer</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% block javascripts %}
+            <script src="{{ asset('js/jquery.collection.js') }}"></script>
+            <script src="{{asset('js/jquery-ui.min.js')}}"></script>
+
+            <script src="{{ asset('js/add-planning.js') }}"></script>
+            <script>
+                planningForm.constructor("form[name='form']", $("#form_submit"), $(".label-day"), $('.day-collection'), '.meal-collection', JSON.parse(document.querySelector('.js-listDays').dataset.isAuthenticated), ".planned-meal-recipe", ".planned-meal-portion", document.querySelector('.js-editMode').dataset.isAuthenticated, $("#modal-submit"), $('#confirm-submit'));
+            </script>
+
+        {% endblock %}
+    {% endblock %}
