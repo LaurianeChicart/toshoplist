@@ -3,54 +3,56 @@
 {% block title %}ToShopList - Ma ToShopList
 {% endblock %}
 {% block stylesheets %}
-    <link href="{{asset('css/show-list.css')}}" rel="stylesheet">
+    <link href="{{asset('css/show-list.min.css')}}" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
+
     <br>
     <div class="row">
-        <div class="col-6">
-            <h2>Ma ToShopList</h2>
-
-        </div>
-        <div class="col-6 text-right">
-            <a class=" btn btn-primary" href="{{ path('modify-shoplist', {'id' : listItems.id}) }}">Modifier la liste</a>
-
-        </div>
-    </div><br>
-
-
-    {% for department in list %}
-        <div class="border border-primary rounded">
-
-            <div class="col text-white font-weight-bold bg-primary p-2">
-                {{ department[0] }}
-            </div>
-
-            {% for item in department[1] %}
-                <div class="checklist m-2">
-                    <label class="item">
-                        {% if item.checked == 1 %}
-                            <input type="checkbox" id="{{ item.id }}" formaction="{{ path('check_memo_list', {'id' : item.id}) }}" class="check" checked>
-                            <span class="checkmark"></span>
-                            <span class="item-details completed">{{ item.quantities }}
-                                {{ item.name }}</span>
-                        {% else %}
-                            <input type="checkbox" id="{{ item.id }}" formaction="{{ path('check_memo_list', {'id' : item.id}) }}" class="check">
-                            <span class="checkmark"></span>
-                            <span class="item-details">{{ item.quantities }}
-                                {{ item.name }}</span>
-                        {% endif %}
-                    </label>
+        <div class="col-lg-9 col-xl-8 mx-auto">
+            <div class="d-sm-flex justify-content-sm-between align-items-sm-center">
+                <div class="mb-3">
+                    <h2 class="title">Ma ToShopList</h2>
                 </div>
-            {% endfor %}
+                <div class="mb-3">
+                    <a class=" btn btn-primary text-white shadow" href="{{ path('modify-shoplist', {'id' : listItems.id}) }}">Modifier la liste</a>
+                </div>
+            </div><br>
 
+            {% for department in list %}
+                <div class="border border-primary rounded shadow">
+
+                    <div class="col text-white bg-primary p-2 title label">
+                        {{ department[0] }}
+                    </div>
+
+                    {% for item in department[1] %}
+                        <div class="checklist m-2">
+                            <label class="item">
+                                {% if item.checked == 1 %}
+                                    <input type="checkbox" id="{{ item.id }}" formaction="{{ path('check_memo_list', {'id' : item.id}) }}" class="check" checked>
+                                    <span class="checkmark"></span>
+                                    <span class="item-details completed">{{ item.quantities }}
+                                        {{ item.name }}</span>
+                                {% else %}
+                                    <input type="checkbox" id="{{ item.id }}" formaction="{{ path('check_memo_list', {'id' : item.id}) }}" class="check">
+                                    <span class="checkmark"></span>
+                                    <span class="item-details">{{ item.quantities }}
+                                        {{ item.name }}</span>
+                                {% endif %}
+                            </label>
+                        </div>
+                    {% endfor %}
+
+                </div>
+                <br>
+            {% endfor %}
         </div>
-        <br>
-    {% endfor %}
+    </div>
 
     {% block javascripts %}
-        <script src="{{ asset('js/show-list.js') }}"></script>
+        <script src="{{ asset('js/show-list.min.js') }}"></script>
         <script>
             shopList.constructor($('.check'), 'span.item-details');
         </script>

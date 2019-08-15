@@ -9,6 +9,10 @@ use App\Form\RegistrationType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -114,6 +118,103 @@ class SecurityController extends AbstractController
         return $this->render('security/user_datas.html.twig', [
             'form' => $form->createView(),
             'errorMessage' => $errorMessage
+        ]);
+    }
+
+    /**
+     * @Route("/mentions-legales", name="legal-mentions")
+     */
+
+    public function showLegalMentions()
+    {
+        return $this->render('security/legal-mentions.html.twig');
+    }
+
+    /**
+     * @Route("/contact", name="contact")
+     */
+
+    public function sendMail(Request $request, \Swift_Mailer $mailer)
+    {
+        if ($this->getUser()) {
+            $emailAddress = $this->getUser()->getEmail();
+        } else {
+            $emailAddress = null;
+        }
+
+        $form = $this
+            ->createFormBuilder()
+            ->setAction($this->generateUrl('contact'))
+            ->add('email', EmailType::class, [
+                'label'        => "Mon adresse e-mail",
+                'required'     => true,
+                'attr'         => [
+                    'class' => 'form-control',
+                    'value' => $emailAddress,
+                ],
+                'trim' => true,
+            ])
+            ->add('subject', TextType::class, [
+                'label'        => "Objet",
+                'required'     => true,
+                'attr'         => [
+                    'class' => 'form-control',
+                ],
+                'trim' => true,
+            ])
+            ->add('message', TextareaType::class, [
+                'label'        => "Message",
+                'required'     => true,
+                'attr'         => [
+                    'class' => 'form-control',
+                    'rows' => '6'
+                ],
+                'trim' => true,
+            ])
+            ->add('submit', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-primary float-right text-white shadow mb-4 mt-3'],
+                'label' => 'Valider la liste'
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $email = htmlspecialchars($request->request->get('email'));
+            $subject = htmlspecialchars($request->request->get('subject'));
+            $message = htmlspecialchars($request->request->get('message'));
+
+            if ($email != "" && $subject != "" && $message != "") {
+                $mail = (new \Swift_Message('ToShopList : ' . $subject))
+                    ->setFrom($email)
+                    ->setTo('chicartlauriane@gmail.com')
+                    ->setBody(
+                        $this->renderView(
+                            'emails/contact.html.twig',
+                            [
+                                'email' => $email,
+                                'subject' => $subject,
+                                'message' => $message
+                            ]
+                        ),
+                        'text/html'
+                    );
+
+                $mailer->send($mail);
+
+                return $this->json([
+                    'message' => "E-mail envoyé !",
+                ], 200);
+            } else {
+                return $this->json([
+                    'message' => "Mot de passe incorrect",
+                ], 403);
+            }
+        }
+
+        return $this->render('security/contact.html.twig', [
+            'authentified' => $this->getUser() !== null,
+            'form' => $form->createView()
         ]);
     }
 }

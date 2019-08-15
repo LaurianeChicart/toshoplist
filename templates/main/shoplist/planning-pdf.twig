@@ -1,60 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
         <title>
             ToShopList - PDF Planning
         </title>
 
-        <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans|Permanent+Marker&display=swap" rel="stylesheet">
+        <link href="{{ "css/bootstrap/compiled/bootstrap.min.css" }}" rel="stylesheet">
 
+        <style>
+            .title {
+                font-family: 'Permanent Marker', cursive;
+            }
+
+            p {
+                margin: 0;
+            }
+        </style>
     </head>
-    <body>
+    <body class="bg-white pdf">
 
-        <div>
-            <h1 class="text-center">Planning du
-                {{ planning.day[0].date| date('d/m/Y') }}
-                au
-                {{ planning.day[(planning.day | length) - 1].date| date('d/m/Y') }}</h1><br>
+        <h1 class="text-center title">Planning du
+            {{ planning.day[0].date| date('d/m/Y') }}
+            au
+            {{ planning.day[(planning.day | length) - 1].date| date('d/m/Y') }}</h1>
+        <br>
 
-            <div>
-                <br>
-                {% for day in planning.day %}
-                    <div class="col-3 d-inline-block">
-                        <div class="border border-primary rounded">
-                            <div class="text-white font-weight-bold bg-primary p-2 text-center">
-                                {{ day.date | localizeddate('none', 'none', 'fr', null, 'EEEE dd/MM')}}
-                            </div>
-                            <div class="text-center">
-                                <div class="bg-light border rounded">
-                                    {% for meal in day.plannedMeal %}
-                                        <a href="{{ path('show-recipe', {'id' : meal.recipe.id}) }}" title="Voir la page recette" target="_blank" class="text-reset text-decoration-none">
-                                            {% if meal.description %}
-                                                <p>{{ meal.description }}</p>
-                                            {% else %}
-                                                <p>{{ meal.recipe.meal.type }}</p>
-                                            {% endif %}
-                                            <p>{{ meal.recipe.name }}
-                                                ({{ meal.portion }}
-                                                {% if meal.portion < 2 %}
-                                                    part)
-                                                {% else %}
-                                                    parts)
-                                                {% endif %}
-                                            </p>
-                                            {% if meal.recipe.image %}
-                                                <div><img alt="Image de {{ meal.recipe.name }}" src="media/cache/my_thumb/uploads/images/{{meal.recipe.image}}"></div>
-                                            {% else %}
-                                                <div><img alt="Image de recette ToShopLsit" src="https://placehold.it/120x90"></div>
-                                            {% endif %}
-                                        </a>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
+
+        {% for day in planning.day %}
+            <table class="table table-sm">
+                <thead class="text-secondary">
+                    <tr>
+                        <th>
+                            {{ day.date | localizeddate('none', 'none', 'fr', null, 'EEEE dd/MM')}}</th>
+                    </tr>
+                </thead>
+                <tr>
+                    {% for meal in day.plannedMeal %}
+                        <td class="col">
+                            {% if meal.description %}
+                                <p>{{ meal.description }}</p>
+                            {% else %}
+                                <p>{{ meal.recipe.meal.type }}</p>
+                            {% endif %}
+
+                            <a href="{{ path('show-recipe', {'id' : meal.recipe.id}) }}" title="Voir la page recette" target="_blank" class="text-decoration-none text-success">
+                                <p>{{ meal.recipe.name }}</p>
+                            </a>
+                            <p>({{ meal.portion }}
+                                {% if meal.portion < 2 %}
+                                    part)
+                                {% else %}
+                                    parts)
+                                {% endif %}
+                            </p>
+                        </td>
+                    {% endfor %}
+                </tr>
+            </table>
+        {% endfor %}
     </body>
 </html>

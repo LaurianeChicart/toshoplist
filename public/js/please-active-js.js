@@ -1,5 +1,5 @@
 const hideActiveJsMessage = {
-    messageId: '',
+    messageId: "",
     constructor(messageId) {
         this.messageId = messageId;
         $("#" + this.messageId).hide();

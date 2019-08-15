@@ -25,15 +25,14 @@
             {{ form_row(form.new_password) }}
             {{ form_row(form.confirm_new_password) }}
 
-            <button class="btn btn-success" type="submit">Enregistrer les modifications</button>
+            <button class="btn btn-primary" type="submit">Enregistrer les modifications</button>
             {{ form_end(form) }}
         </div>
     </div>
     {% block javascripts %}
-        <script src="{{asset('js/user-datas.js')}}"></script>
+        <script src="{{asset('js/user-datas.min.js')}}"></script>
         <script>
             userDatasForm.constructor($("form[name='user_datas']"), "user_datas_email", "user_datas_current_password", "user_datas_new_password", "user_datas_confirm_new_password");
-            // userDatasForm = new UserDatasForm("form[name='user_datas']", "user_datas_email", "user_datas_current_password", "user_datas_new_password", "user_datas_confirm_new_password");
         </script>
     {% endblock %}
 

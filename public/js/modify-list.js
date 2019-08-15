@@ -1,13 +1,13 @@
 
 const listForm = {
-    departmentCollection: '',
-    departmentPosition: '',
-    itemCollection: '',
-    itemPosition: '',
-    departmentLabels: '',
-    departmentNames: '',
-    form: '',
-    itemName: '',
+    departmentCollection: "",
+    departmentPosition: "",
+    itemCollection: "",
+    itemPosition: "",
+    departmentLabels: "",
+    departmentNames: "",
+    form: "",
+    itemName: "",
 
     constructor(departmentCollection, departmentPosition, itemCollection, itemPosition, departmentLabels, departmentNames, form, itemName) {
         this.departmentCollection = departmentCollection;
@@ -29,7 +29,7 @@ const listForm = {
         });
 
         this.departmentCollection.collection({
-            prefix: 'parent',
+            prefix: "parent",
             allow_add: false,
             allow_remove: false,
             allow_up: true,
@@ -39,7 +39,7 @@ const listForm = {
             hide_useless_buttons: true,
             drag_drop: true,
             drag_drop_options: {
-                placeholder: 'ui-state-highlight',
+                placeholder: "ui-state-highlight",
                 opacity: 0.8,
                 //containment: "parent"
             },
@@ -51,16 +51,16 @@ const listForm = {
                     allow_remove: true,
                     allow_up: true,
                     allow_down: true,
-                    add: '<a class="btn btn-secondary" href="#" title="Ajouter un produit"><span class="fas fa-plus"></span> Ajouter un produit</a>',
-                    remove: '<a class="btn btn-secondary" href="#" title="Supprimer ce produit"><span class="fas fa-times"></span></a>',
-                    up: '<a href="#" class="btn btn-secondary" title="Monter ce produit"><span class="fas fa-arrow-up"></span></a>',
-                    down: '<a href="#" class="btn btn-secondary" title="Descendre ce produit"><span class="fas fa-arrow-down"></span></a>',
+                    add: '<a class="btn btn-secondary text-white mb-3" href="#" title="Ajouter un produit"><span class="fas fa-plus"></span> Ajouter un produit</a>',
+                    remove: '<a class="btn btn-dark" href="#" title="Supprimer ce produit"><span class="fas fa-times"></span></a>',
+                    up: '<a href="#" class="btn btn-dark" title="Monter ce produit"><span class="fas fa-arrow-up"></span></a>',
+                    down: '<a href="#" class="btn btn-dark" title="Descendre ce produit"><span class="fas fa-arrow-down"></span></a>',
                     min: 0,
                     add_at_the_end: true,
                     hide_useless_buttons: true,
                     drag_drop: true,
                     drag_drop_options: {
-                        placeholder: 'ui-state-highlight',
+                        placeholder: "ui-state-highlight",
                         opacity: 0.8,
                         //containment: "parent"
                     },
@@ -91,7 +91,7 @@ const listForm = {
             window.scrollTo(0, 0);
         }
         listForm.itemName.each(function () {
-            if (($.trim($(this).val())) == '') {
+            if (($.trim($(this).val())) == "") {
                 e.preventDefault();
                 let $errorMessage = "<span class='invalid-feedback d-block'><span class='d-block'><span class='form-error-icon badge badge-danger text-uppercase'>Erreur</span><span class='form-error-message'> Tous les éléments de la liste doivent avoir un nom</span></span></span><br>";
                 $(listForm.form).prepend($errorMessage);

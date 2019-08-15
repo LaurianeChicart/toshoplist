@@ -1,10 +1,10 @@
 const memo = {
 
-    addForm: '',
-    addInput: '',
-    listInput: '',
-    deleteBtns: '',
-    resetBtn: '',
+    addForm: "",
+    addInput: "",
+    listInput: "",
+    deleteBtns: "",
+    resetBtn: "",
 
     constructor(form, input, list, xBtns, btn) {
         this.addForm = form;
@@ -28,11 +28,11 @@ const memo = {
     deleteItem(e) {
         e.preventDefault();
         let selection = $(this);
-        let url = selection.attr('href');
+        let url = selection.attr("href");
         $.ajax({
             url: url,
-            dataType: 'json',
-            success: selection.parents('li').remove()
+            dataType: "json",
+            success: selection.parents("li").remove()
         });
     },
 
@@ -51,21 +51,21 @@ const memo = {
     addItem(e) {
         e.preventDefault();
         let selection = $(this);
-        let url = selection.attr('action');
+        let url = selection.attr("action");
         let data = selection.serialize();
 
         $.ajax({
             url: url,
-            type: 'post',
+            type: "post",
             data: data,
-            dataType: 'json',
+            dataType: "json",
 
             success: function (reponse) {
-                memo.listInput.append("<li><p class='item'>" + reponse.item + "<span><a class='btn btn-secondary btn-sm close' href=' /moncompte/supprimer-element-memo/" + reponse.id + "'><span class='fas fa-times'></span></a></span></p></li>");
-                memo.addInput.val('');
+                memo.listInput.append("<li><p class='item'>" + reponse.item + "<span><a class='btn btn-dark btn-sm delete float-right' href=' /moncompte/supprimer-element-memo/" + reponse.id + "'><span class='fas fa-times'></span></a></span></p></li>");
+                memo.addInput.val("");
             },
             complete: function () {
-                memo.deleteBtns = $(".close");
+                memo.deleteBtns = $(".delete");
                 memo.deleteBtns.click(memo.deleteItem);
             }
         });

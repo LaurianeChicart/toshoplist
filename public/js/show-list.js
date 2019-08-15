@@ -1,7 +1,7 @@
 const shopList = {
-    inputIngredients: '',
+    inputIngredients: "",
     //la partie textuelle de l'input à barrer au check
-    itemDetails: '',
+    itemDetails: "",
 
     constructor(inputIngredients, itemDetails) {
         this.inputIngredients = inputIngredients;
@@ -14,26 +14,24 @@ const shopList = {
     checkItem(e) {
         e.preventDefault();
         let selection = $(this);
-        let url = selection.attr('formaction');
-        let id = selection.attr('id');
+        let url = selection.attr("formaction");
+        let id = selection.attr("id");
         let $itemDetails = $("#" + id + " ~ " + shopList.itemDetails);
         if (!$itemDetails.hasClass("completed")) {
             $.ajax({
                 url: url,
-                dataType: 'json',
+                dataType: "json",
                 success: $itemDetails.addClass("completed")
             });
         }
         else {
             $.ajax({
                 url: url,
-                dataType: 'json',
+                dataType: "json",
                 success: $itemDetails.removeClass("completed")
             });
         }
-
     }
-
 }
 
 

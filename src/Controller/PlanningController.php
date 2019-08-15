@@ -121,23 +121,21 @@ class PlanningController extends AbstractController
                 'prototype'    => true,
                 'required'     => false,
                 'attr'         => [
-                    'class' => 'day-collection bg-light',
+                    'class' => 'day-collection',
                 ],
             ])
             ->add('submit', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-primary float-right'],
+                'attr' => ['class' => 'btn btn-primary float-right text-white shadow mb-4 mt-3'],
                 'label' => $labelSubmit
             ])
             ->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($request);
             foreach ($days as $day) {
                 foreach ($day->getPlannedMeal() as $plannedMeal) {
                     $plannedMeal->setDescription(htmlspecialchars($plannedMeal->getDescription()));
                     $manager->persist($plannedMeal);
-                    dump($plannedMeal);
                 }
             }
             $listDepartmentList = [];
@@ -338,10 +336,6 @@ class PlanningController extends AbstractController
         $dompdf->stream("mypdf.pdf", [
             "Attachment" => false,
         ]);
-
-        // return $this->render('main/shoplist/planning-pdf.twig', [
-        //     'planning' => $planning
-        // ]);
     }
 
     /**
@@ -369,7 +363,7 @@ class PlanningController extends AbstractController
             ->add('listDepartment', CollectionType::class, [
                 'entry_type'   => ListDepartmentType::class,
                 'entry_options' => [
-                    'attr' => ['class' => 'col'],
+                    'attr' => ['class' => 'col-md'],
                 ],
                 'label'        => false,
                 'allow_add'    => false,
@@ -377,11 +371,11 @@ class PlanningController extends AbstractController
                 'prototype'    => true,
                 'required'     => false,
                 'attr'         => [
-                    'class' => 'department-collection bg-light',
+                    'class' => 'department-collection',
                 ],
             ])
             ->add('submit', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-primary float-right'],
+                'attr' => ['class' => 'btn btn-primary float-right text-white shadow mb-4 mt-3'],
                 'label' => 'Valider la liste'
             ])
             ->getForm();

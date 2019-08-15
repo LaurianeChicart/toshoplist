@@ -1,7 +1,7 @@
 const datesForm = {
-    form: '',
-    startDate: '',
-    stopDate: '',
+    form: "",
+    startDate: "",
+    stopDate: "",
 
     constructor(form, startDate, stopDate) {
         this.form = form;
@@ -15,7 +15,7 @@ const datesForm = {
                 $(this).remove();
             })
         }
-        if (datesForm.startDate.val() == '' || datesForm.stopDate.val() == '') {
+        if (datesForm.startDate.val() == "" || datesForm.stopDate.val() == "") {
             e.preventDefault();
             let $errorMessage = "<span class='invalid-feedback d-block'><span class='d-block'><span class='form-error-icon badge badge-danger text-uppercase'>Erreur</span><span class='form-error-message'> Les 2 champs doivent être renseignés</span></span></span>";
             datesForm.form.prepend($errorMessage);

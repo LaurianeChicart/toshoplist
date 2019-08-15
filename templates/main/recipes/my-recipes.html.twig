@@ -5,14 +5,14 @@
 
 {% block body %}
     <br>
-    <div class="row">
-        <div class="col-6">
-            <h2>Mes recettes</h2>
+    <div class="d-sm-flex justify-content-sm-between">
+        <div class="mb-4">
+            <h2 class="title">Mes recettes</h2>
         </div>
-        <div class="col-6 text-right">
-            <a class=" btn btn-primary" href=" {{ path('create-recipe') }} ">Ajouter une recette</a>
+        <div class="mb-4">
+            <a class=" btn btn-primary text-white shadow" href=" {{ path('create-recipe') }} ">Ajouter une recette</a>
         </div>
-    </div><br>
+    </div>
 
     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
         {% for myMeal in myMeals %}
@@ -29,41 +29,42 @@
         {% for myMeal in myMeals %}
 
             <div aria-labelledby="pills-{{ myMeal.id }}-tab" {% if myMeal == myMeals[0] %} class="tab-pane fade active show" {% else %} class="tab-pane fade" {% endif %} id="pills-{{ myMeal.id }}" role="tabpanel">
-                <div class="row">
+                <div class="row ">
                     {% for recipe in user.recipes if recipe.meal == myMeal %}
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6 ">
-                            <div class="card">
+                        <div class="col-6 col-sm-4 col-md-3 col-6 col-xl-2 mb-3">
+                            <div class="shadow text-center pt-3 pb-3 recipe-card">
                                 {% if recipe.image %}
-                                    <img alt='Image de "{{ recipe.name }}"' class="card-img-top" src="{{ asset('uploads/images/' ~ recipe.image) | imagine_filter('my_thumb')}}">
+                                    <img alt='Image de "{{ recipe.name }}"' class="img-fluid" src="{{ asset('images/uploads/' ~ recipe.image) | imagine_filter('my_thumb')}}">
                                 {% else %}
-                                    <img alt='Image de "{{ recipe.name }}"' class="card-img-top" src="https://placehold.it/120x90">
+                                    <img alt='Image de "{{ recipe.name }}"' class="img-fluid" src="{{ asset('images/toshoplist-recipe.png')}}">
                                 {% endif %}
-                                <div class="card-body">
-                                    <p class="card-title text-center">{{ recipe.name }}</p>
-                                    <div class="text-center">
-                                        <a class="btn btn-secondary btn-sm" href="{{ path('show-recipe', {'id' : recipe.id}) }}" title="Voir la recette">
+                                <div>
+                                    <div class="text-center mt-2 mb-2">
+                                        <a class="btn btn-secondary btn-sm text-white" href="{{ path('show-recipe', {'id' : recipe.id}) }}" title="Voir la recette">
                                             <span class="fas fa-book-open"></span>
                                         </a>
-                                        <a class="btn btn-secondary btn-sm" href="{{ path('edit-recipe', {'id' : recipe.id}) }}" title="Modifier la recette">
+                                        <a class="btn btn-secondary btn-sm text-white" href="{{ path('edit-recipe', {'id' : recipe.id}) }}" title="Modifier la recette">
                                             <span class="fas fa-edit"></span>
                                         </a>
-                                        <a class="btn btn-secondary btn-sm" href="{{ path('delete-recipe', {'id' : recipe.id}) }}" title="Supprimer la recette">
+                                        <a class="btn btn-secondary btn-sm text-white" href="{{ path('delete-recipe', {'id' : recipe.id}) }}" title="Supprimer la recette">
                                             <span class="fas fa-trash-alt"></span>
                                         </a>
                                     </div>
+                                    <p class="card-title text-center mb-0">{{ recipe.name }}</p>
                                 </div>
                             </div>
                         </div>
                     {% else %}
                         <div class="col">
-                            <p>Pas de recette dans cette catégorie actuellement.</p>
+                            <div class="col">
+                                <p>Pas de recette dans cette catégorie actuellement.</p>
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
             </div>
         {% endfor %}
-
     </div>
-
+    <br>
 
 {% endblock %}

@@ -2,45 +2,53 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
         <title>
             {% block title %}{% endblock %}
         </title>
+        <link href="{{ asset('css/bootstrap/compiled/bootstrap.min.css') }}" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/d36a8700a0.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans|Permanent+Marker&display=swap" rel="stylesheet">
+        <link href="{{ asset('css/style.min.css') }}" rel="stylesheet"> {% block stylesheets %}{% endblock %}
 
-        <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet"> {% block stylesheets %}{% endblock %}
+        <!-- favicon-->
+        <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}"/>
 
         <script crossorigin="anonymous" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script crossorigin="anonymous" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script crossorigin="anonymous" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <script src="https://kit.fontawesome.com/d36a8700a0.js"></script>
+
 
     </head>
     <body>
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+        <nav class="navbar navbar-dark navbar-expand-lg bg-secondary text-white static-top">
             <div class="container">
-                <a class="navbar-brand" href="{{ path('dashboard') }}">
-                    <img alt="Logo de ToShopList" src="http://placehold.it/150x50?text=Logo">
-                </a>
-                <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
+                <p>
+                    <a class="navbar-brand d-flex align-items-center" href="{{ path('dashboard') }}">
+                        <img alt="Logo de ToShopList" src="{{ asset('images/logo-toshoplist.png') }}"><strong class="title text-white" id="logo-title">
+                            ToShopList</strong>
+                    </a>
+                </p>
+                <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler border" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('recipes') }}">Mes recettes
+                            <a class="nav-link text-white font-weight-bold" href="{{ path('recipes') }}">Mes recettes
                                 <span class="sr-only"></span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('memo') }}">Mémo</a>
-
+                            <a class="nav-link text-white font-weight-bold" href="{{ path('memo') }}">Mémo</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('plannings') }}">Mes ToShopLists</a>
+                            <a class="nav-link text-white font-weight-bold" href="{{ path('plannings') }}">Mes ToShopLists</a>
                         </li>
                     </ul>
                     <span class="dropdown navbar-nav navbar-right">
-                        <a aria-expanded="false" aria-haspopup="true" class="nav-link nav-item dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdown" role="button">
+                        <a aria-expanded="false" aria-haspopup="true" class="nav-link nav-item dropdown-toggle text-white font-weight-bold" data-toggle="dropdown" href="#" id="navbarDropdown" role="button">
                             Mon compte
                         </a>
                         <div aria-labelledby="navbarDropdown" class="dropdown-menu">
@@ -51,9 +59,21 @@
                 </div>
             </div>
         </nav>
+        <div class="container corpus"> {% block body %}{% endblock %}
+            </div><br>
 
-        <div class="container"> {% block body %}{% endblock %}
-            </div>
+            <footer class="bg-secondary d-flex justify-content-center align-items-center">
+                <div class="text-white text-center">
+                    <p>
+                        <a href="{{ path('legal-mentions') }}" class="text-white">Mention légales</a>
+                        -
+                        <a href="{{ path('contact') }}" class="text-white">Contact</a>
+
+                    </p>
+                    <p>© 2019 - ToShopList, Tous droits réservés</p>
+                </div>
+            </footer>
+
             <div class="bg-danger fixed-bottom" id="please-active-js">
                 <div class="container text-white font-weight-bold p-2">
                     <span class="fas fa-exclamation-triangle"></span>
@@ -61,7 +81,7 @@
                 </div>
             </div>
 
-            <script src="{{ asset('js/please-active-js.js') }}"></script>
+            <script src="{{ asset('js/please-active-js.min.js') }}"></script>
             <script>
                 hideActiveJsMessage.constructor('please-active-js');
             </script>

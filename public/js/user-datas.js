@@ -1,9 +1,9 @@
 const userDatasForm = {
-    form: '',
-    email: '',
-    currentPassword: '',
-    newPassword: '',
-    confirmNewPassword: '',
+    form: "",
+    email: "",
+    currentPassword: "",
+    newPassword: "",
+    confirmNewPassword: "",
 
     constructor(form, email, currentPassword, newPassword, confirmNewPassword) {
         this.form = form;
@@ -52,9 +52,6 @@ const userDatasForm = {
         if ($("p.valid-feedback")) {
             $("p.valid-feedback").remove();
         }
-        if ($("p.invalid-feedback")) {
-            $("p.invalid-feedback").remove();
-        }
 
         if (userDatasForm.checkEmail() == false) {
             e.preventDefault();
@@ -71,20 +68,20 @@ const userDatasForm = {
         }
         e.preventDefault();
         let selection = $(this);
-        let url = selection.attr('action');
+        let url = selection.attr("action");
         let data = selection.serialize();
 
         $.ajax({
             url: url,
-            type: 'post',
+            type: "post",
             data: data,
-            dataType: 'json',
+            dataType: "json",
             success: function (reponse) {
                 let $successMessage = $("<p class='valid-feedback d-block'><span class='d-block'><span class='form-success-icon badge badge-success text-uppercase'>Succès</span><span class='form-success-message'> " + reponse.message + "</span></span></p>");
                 $successMessage.prependTo(userDatasForm.form);
-                $("#" + userDatasForm.currentPassword).val('');
-                $("#" + userDatasForm.newPassword).val('');
-                $("#" + userDatasForm.confirmNewPassword).val('');
+                $("#" + userDatasForm.currentPassword).val("");
+                $("#" + userDatasForm.newPassword).val("");
+                $("#" + userDatasForm.confirmNewPassword).val("");
 
             },
             error: function (reponse) {

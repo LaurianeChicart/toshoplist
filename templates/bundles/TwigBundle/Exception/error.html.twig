@@ -2,28 +2,39 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
         <title>
             ToShopList - Erreur
         </title>
 
-        <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
+        <link href="{{ asset('css/bootstrap/compiled/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/style.min.css') }}" rel="stylesheet">
+        <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans|Permanent+Marker&display=swap" rel="stylesheet">
+
+        <!-- favicon-->
+        <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}"/>
+
         <script src="https://kit.fontawesome.com/d36a8700a0.js"></script>
 
     </head>
-    <body>
+    <body class="bg-light text-secondary error-bg">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 mx-auto">
-                    <h1>Oups, la requête a fait chou blanc !</h1>
-                    <h3>Le serveur a retourné "{{ status_code }}
-                        {{ status_text }}".</h3>
+                <div class="col-10 col-md-6 mx-auto rounded error-msg">
+                    <h1 class="title">Oups, la requête a fait chou blanc !</h1><br>
+                    <h4>Le serveur a retourné "{{ status_code }}
+                        {{ status_text }}".</h4>
                     {% if status_code == 404 %}
                         <p>La page demandée n'existe pas.</p>
                     {% elseif status_code == 403 %}
                         <p>Vous ne pouvez pas accéder à la page demandée.</p>
                     {% endif %}
+                    <br>
                     <p>
-                        <a href="{{ path('dashboard') }}">Retour au site</a>
+                        <a class="font-weight-bold" href="{{ path('security_registration') }}">
+                            <span class="fas fa-long-arrow-alt-left"></span>
+                            Retour au site</a>
                     </p>
                 </div>
             </div>

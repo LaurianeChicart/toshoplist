@@ -9,16 +9,16 @@
     <div class="row">
         <div class="col-lg-6 mx-auto">
 
-            <h3>Mon mémo</h3>
-            <p>Les éléments que vous indiquer dans le mémo seront automatiquement rajoutés à votre liste de courses.</p>
+            <h3 class="title">Mon mémo</h3><br>
+            <p>Les éléments que vous indiquer dans le mémo seront automatiquement rajoutés à votre liste de courses.</p><br>
 
             {% if user.memos %}
-                <ul class="list-unstyled" id="js-list">
+                <ul class="list-unstyled col" id="js-list">
                     {% for memo in user.memos %}
-                        <li>
+                        <li class="bg-light p-1 mb-2">
                             <p class="item">{{ memo.item }}
                                 <span>
-                                    <a class="btn btn-secondary btn-sm close" href=" {{ path('delete_memo_item', {'id' : memo.id} ) }}" title="Supprimer l'élément">
+                                    <a class="btn btn-dark btn-sm delete float-right" href=" {{ path('delete_memo_item', {'id' : memo.id} ) }}" title="Supprimer l'élément">
                                         <span class="fas fa-times"></span>
                                     </a>
                                 </span>
@@ -29,28 +29,30 @@
             {% else %}
                 <p>Rien dans le mémo</p>
             {% endif %}
-
+            <br>
             {{ form_start(form, {'action': path('memo'), 'method': 'POST'}) }}
-            <div class="d-flex flex-row">
+
+            <div class="input-group mb-3">
                 {{ form_widget(form) }}
-                <div>
-                    <button id="addItem" type="submit">+</button>
+                <div class="input-group-append">
+                    <button class="btn btn-secondary text-white" id="addItem" type="submit">
+                        <span class="fas fa-plus"></span>
+                    </button>
                 </div>
             </div>
             {{ form_end(form) }}
-
+            <br>
             <div class="text-right">
-                <a class=" btn btn-secondary" href=" {{ path('reset_memo') }} " id="reset">Vider le mémo</a>
+                <a class=" btn btn-dark text-white shadow" href=" {{ path('reset_memo') }} " id="reset">Vider le mémo</a>
             </div>
 
         </div>
     </div>
     {% block javascripts %}
-        <script src="{{ asset('js/memo.js') }}"></script>
+        <script src="{{ asset('js/memo.min.js') }}"></script>
         <script>
-            memo.constructor($('form[name="memo"]'), $(".js-addInput"), $("#js-list"), $(".close"), $("#reset"));
+            memo.constructor($('form[name="memo"]'), $(".js-addInput"), $("#js-list"), $(".delete"), $("#reset"));
         </script>
 
     {% endblock %}
-
 {% endblock %}

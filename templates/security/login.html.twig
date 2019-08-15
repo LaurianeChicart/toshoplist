@@ -2,43 +2,51 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
         <title>ToShopList - Connexion</title>
-        <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
+
+        <!-- favicon-->
+        <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}"/>
+
+        <link href="{{ asset('css/bootstrap/compiled/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/style.min.css') }}" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans|Permanent+Marker&display=swap" rel="stylesheet">
+        <link href="{{ asset('css/login.min.css') }}" rel="stylesheet">
         <script crossorigin="anonymous" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     </head>
     <body>
         <div class="container">
-            <div class="row">
-                <div class="col-lg-6 mx-auto">
-                    <h2>Connexion</h2>
+            <div class="row m-1">
+                <div class="col-md-6 mx-auto rounded shadow-lg bg-primary" id="connexion-form">
+                    <h2 class="title text-white">Identification</h2>
                     {% if error %}
                         <div class="invalid-feedback d-block">
                             <span class="d-block">
                                 <span class="form-error-icon badge badge-danger text-uppercase">Erreur</span>
-                                <span class="form-error-message">Identifiants incorrects</span>
-
+                                <span class="form-error-message text-white">Identifiants incorrects</span>
                             </span>
                         </div>
-
                     {% endif %}
 
                     <form action="{{ path('security_login') }}" method="post">
                         <div class="form-group">
                             <label>Email</label><input class="form-control" name="_username" placeholder="adresse@mail.com" required type="text" value="{{ last_username }}">
-
                         </div>
                         <div class="form-group">
-                            <label>Mot de passe</label><input class="form-control" name="_password" required type="password">
+                            <label>Mot de passe</label><input autocomplete class="form-control" name="_password" required type="password">
                         </div>
-                        <input checked id="remember_me" name="_remember_me" type="checkbox"/>
-                        <label for="remember_me">Se souvenir de moi</label>
+                        <label class="remember-me" for="remember_me">
+                            <input checked class="check" id="remember_me" name="_remember_me" type="checkbox"/>
+                            <span class="checkmark"></span>
+                            Se souvenir de moi</label>
                         <div class="form-group">
-                            <button class="btn btn-success" type="submit">Connexion</button>
+                            <button class="btn btn-success btn-lg float-right shadow font-weight-bold" type="submit">Connexion</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+
         <div class="bg-danger fixed-bottom" id="please-active-js">
             <div class="container text-white font-weight-bold p-2">
                 <span class="fas fa-exclamation-triangle"></span>
@@ -46,7 +54,7 @@
             </div>
         </div>
 
-        <script src="{{ asset('js/please-active-js.js') }}"></script>
+        <script src="{{ asset('js/please-active-js.min.js') }}"></script>
         <script>
             hideActiveJsMessage.constructor('please-active-js');
         </script>

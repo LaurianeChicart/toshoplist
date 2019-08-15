@@ -7,9 +7,9 @@ use App\Entity\RecipeIngredient;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 class RecipeIngredientType extends AbstractType
@@ -17,13 +17,10 @@ class RecipeIngredientType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('quantity', NumberType::class, [
+            ->add('quantity', TextType::class, [
                 'trim' => true,
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Ex: 1, 0.5...', 'required' => true],
                 'label' => 'Quantité*',
-                'scale' => 2,
-                'input' => 'string'
-
             ])
             ->add('measure', ChoiceType::class, [
                 'choices'  => [

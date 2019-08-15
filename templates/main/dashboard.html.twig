@@ -5,78 +5,81 @@
 
 {% block body %}
     <br>
-    <h2>Mon espace</h2>
+    <h2 class="title">Mon espace</h2>
     <br>
     <div class="row">
         <div class="col-lg-6">
-            <h3>Ma dernière ToShopList</h3>
-            <p>
-                {% if user.plannings | length > 0 %}
-                    {{ user.plannings[(user.plannings | length) -1].createdAt | date('d/m/Y')}}
-                    -
-                    <a href="{{ path('fill-planning', {'id' : user.plannings[(user.plannings | length) -1].id}) }}">Planning</a>
-                    {% if  user.plannings[(user.plannings | length) -1].listItems %}
+            <div class="bg-light shadow-sm p-4 mb-4">
+                <h3 class="title">Ma dernière ToShopList</h3>
+                <p>
+                    {% if user.plannings | length > 0 %}
+                        {{ user.plannings[(user.plannings | length) -1].createdAt | date('d/m/Y')}}
                         -
-                        <a href="{{ path('planning-pdf', {'id' : user.plannings[(user.plannings | length) -1].id}) }}">PDF</a>
-                    {% endif %}
-                    {% if user.plannings[(user.plannings | length) - 1].listItems %}
-                        -
-                        <a href="{{ path('shoplist', {'id' : user.plannings[(user.plannings | length) -1].listItems.id}) }}">ToShopList</a>
-                    {% endif %}
-                {% else %}
-                    Aucun planning créé
-                {% endif %}
-            </p>
-
-            <div class="text-right">
-                <a class="btn btn-success" href="{{ path('create-planning') }}">Créer un planning</a>
-            </div>
-        </div>
-
-        <div class="col-lg-6">
-            <a class="text-decoration-none text-reset" href="{{ path('recipes') }}">
-                <h3>Mes recettes</h3>
-
-                {% if user.recipes|length > 0 %}
-                    <p>Vous avez créé
-                        {{ user.recipes|length }}
-                        {% if user.recipes|length < 2 %}
-                            recette
-                        {% else %}
-                            recettes
+                        <a href="{{ path('fill-planning', {'id' : user.plannings[(user.plannings | length) -1].id}) }}">Planning</a>
+                        {% if  user.plannings[(user.plannings | length) -1].listItems %}
+                            -
+                            <a href="{{ path('planning-pdf', {'id' : user.plannings[(user.plannings | length) -1].id}) }}">PDF</a>
                         {% endif %}
-                    </p>
+                        {% if user.plannings[(user.plannings | length) - 1].listItems %}
+                            -
+                            <a href="{{ path('shoplist', {'id' : user.plannings[(user.plannings | length) -1].listItems.id}) }}">ToShopList</a>
+                        {% endif %}
+                    {% else %}
+                        Aucun planning créé
+                    {% endif %}
+                </p>
 
-                {% else %}
-                    <p>Aucune recette créée</p>
-                {% endif %}
-
-            </a>
-            <div class="text-right">
-                <a class="btn btn-primary" href="{{ path('recipes') }}">Voir mes recettes</a>
-                <a class="btn btn-primary" href="{{ path('create-recipe') }}">Ajouter une recette</a>
+                <div class="text-right">
+                    <a class="btn btn-primary text-white shadow" href="{{ path('create-planning') }}">Créer un planning</a>
+                </div>
             </div>
         </div>
 
         <div class="col-lg-6">
-            <a class="text-decoration-none text-reset" href="{{ path('memo') }}">
+            <div class="bg-light shadow-sm p-4 mb-4">
+                <a class="text-decoration-none text-reset" href="{{ path('recipes') }}">
+                    <h3 class="title">Mes recettes</h3>
+                    {% if user.recipes|length > 0 %}
+                        <p>Vous avez créé
+                            {{ user.recipes|length }}
+                            {% if user.recipes|length < 2 %}
+                                recette
+                            {% else %}
+                                recettes
+                            {% endif %}
+                        </p>
 
-                <h3>Mon mémo</h3>
-                {% if user.memos|length > 0 %}
-                    <p>Contenu de mon mémo :</p>
-                    <ul class="list-unstyled col">
+                    {% else %}
+                        <p>Aucune recette créée</p>
+                    {% endif %}
+                </a>
+                <div class="text-right">
+                    <a class="btn btn-primary text-white shadow" href="{{ path('recipes') }}">Voir mes recettes</a>
+                    <a class="btn btn-primary text-white shadow" href="{{ path('create-recipe') }}">Ajouter une recette</a>
+                </div>
+            </div>
+        </div>
 
-                        {% for memo in user.memos %}
-                            <li>{{ memo.item }}</li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p>Rien dans le mémo</p>
-                {% endif %}
-            </a>
-            <div class="text-right">
-                <a class="btn btn-primary" href="{{ path('memo') }}">Modifier</a>
+        <div class="col-lg-6">
+            <div class="bg-light shadow-sm p-4 mb-4">
+                <a class="text-decoration-none text-reset" href="{{ path('memo') }}">
+                    <h3 class="title">Mon mémo</h3>
+                    {% if user.memos|length > 0 %}
+                        <p>Contenu de mon mémo :</p>
+                        <ul class="list-unstyled col">
 
+                            {% for memo in user.memos %}
+                                <li>{{ memo.item }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>Rien dans le mémo</p>
+                    {% endif %}
+                </a>
+                <div class="text-right">
+                    <a class="btn btn-primary text-white shadow" href="{{ path('memo') }}">Modifier</a>
+
+                </div>
             </div>
         </div>
     </div>

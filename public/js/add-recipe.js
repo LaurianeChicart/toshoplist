@@ -1,25 +1,25 @@
 const addRecipeForm = {
 
-    collection: '',
-    addBtnDesc: '',
-    removeBtnDesc: '',
-    addBtn: '',
-    removeBtns: '',
-    form: '',
-    nameId: '',
-    portionsNbId: '',
-    imageId: '',
-    ingredientPrefixe: '',
-    quantitySuffix: '',
-    nameSuffix: '',
-    departmentSuffix: '',
-    idSuffix: '',
-    listIngredients: '',
-    counterIngredients: '',
-    $availableTags: '',
-    portionsNb: '',
-    name: '',
-    image: '',
+    collection: "",
+    addBtnDesc: "",
+    removeBtnDesc: "",
+    addBtn: "",
+    removeBtns: "",
+    form: "",
+    nameId: "",
+    portionsNbId: "",
+    imageId: "",
+    ingredientPrefixe: "",
+    quantitySuffix: "",
+    nameSuffix: "",
+    departmentSuffix: "",
+    idSuffix: "",
+    listIngredients: "",
+    counterIngredients: "",
+    availableTags: "",
+    portionsNb: "",
+    name: "",
+    image: "",
 
     constructor(collection, addBtnDesc, removeBtnDesc, addBtn, removeBtns, form, nameId, portionsNbId, imageId, ingredientPrefixe, quantitySuffix, nameSuffix, departmentSuffix, idSuffix, listIngredients) {
 
@@ -151,8 +151,8 @@ const addRecipeForm = {
             },
             open: function (event, ui) {
                 $("#" + addRecipeForm.ingredientPrefixe + i + addRecipeForm.departmentSuffix).removeAttr("disabled");
-                $("#" + addRecipeForm.ingredientPrefixe + i + addRecipeForm.departmentSuffix).val('');
-                $("#" + addRecipeForm.ingredientPrefixe + i + addRecipeForm.idSuffix).val('');
+                $("#" + addRecipeForm.ingredientPrefixe + i + addRecipeForm.departmentSuffix).val("");
+                $("#" + addRecipeForm.ingredientPrefixe + i + addRecipeForm.idSuffix).val("");
             },
         });
     },
@@ -171,9 +171,9 @@ const addRecipeForm = {
     },
 
     removeAccents(str) {
-        var accents = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
+        var accents = "ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž";
         var accentsOut = "AAAAAAaaaaaaOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz";
-        str = str.split('');
+        str = str.split("");
         var strLen = str.length;
         var i, x;
         for (i = 0; i < strLen; i++) {
@@ -181,7 +181,7 @@ const addRecipeForm = {
                 str[i] = accentsOut[x];
             }
         }
-        return str.join('');
+        return str.join("");
     },
 
     fillFieldsAtAutocompletion(label, department, value, i) {
@@ -206,7 +206,7 @@ const addRecipeForm = {
 
     checkName() {
         addRecipeForm.deleteErrorMessage(addRecipeForm.nameId);
-        if ($.trim(addRecipeForm.name.val()).length < 6 || $.trim(addRecipeForm.name.val()) == '') {
+        if ($.trim(addRecipeForm.name.val()).length < 6 || $.trim(addRecipeForm.name.val()) == "") {
             addRecipeForm.showErrorMessage(addRecipeForm.nameId, " Le nom doit comporter au moins 6 caractères.");
             return false;
         }
@@ -227,7 +227,7 @@ const addRecipeForm = {
 
         addRecipeForm.deleteErrorMessageIngredient(addRecipeForm.ingredientPrefixe + i + addRecipeForm.quantitySuffix);
 
-        if ($.trim($quantity.val()) == '') {
+        if ($.trim($quantity.val()) == "") {
             return false;
         }
         else {
@@ -242,7 +242,7 @@ const addRecipeForm = {
     checkNameIngredient(i) {
         let $nameIngredient = $("#" + addRecipeForm.ingredientPrefixe + i + addRecipeForm.nameSuffix);
         addRecipeForm.deleteErrorMessageIngredient(addRecipeForm.ingredientPrefixe + i + addRecipeForm.nameSuffix);
-        if (($.trim($nameIngredient.val())).length < 3 || ($.trim($nameIngredient.val())) == '') {
+        if (($.trim($nameIngredient.val())).length < 3 || ($.trim($nameIngredient.val())) == "") {
             addRecipeForm.showErrorMessageIngredient(addRecipeForm.ingredientPrefixe + i + addRecipeForm.nameSuffix, " Le nom doit comporter au moins 3 caractères.");
             return false;
         }
@@ -250,7 +250,7 @@ const addRecipeForm = {
     checkDepartment(i) {
         let $department = $("#" + addRecipeForm.ingredientPrefixe + i + addRecipeForm.departmentSuffix);
         addRecipeForm.deleteErrorMessageIngredient(addRecipeForm.ingredientPrefixe + i + addRecipeForm.departmentSuffix);
-        if ($department.val() == '') {
+        if ($department.val() == "") {
             addRecipeForm.showErrorMessageIngredient(addRecipeForm.ingredientPrefixe + i + addRecipeForm.departmentSuffix, " Un rayon doit être sélectionné pour chaque ingrédient.");
             return false;
         }
@@ -258,14 +258,13 @@ const addRecipeForm = {
 
     checkForm(e) {
 
-
         if (addRecipeForm.checkName() == false) {
             e.preventDefault();
         }
         if (addRecipeForm.checkPortionsNb() == false) {
             e.preventDefault();
         }
-        if ('files' in addRecipeForm.image) {
+        if ("files" in addRecipeForm.image) {
             if (addRecipeForm.checkImage() == false) {
                 e.preventDefault();
             }
@@ -283,7 +282,7 @@ const addRecipeForm = {
         }
 
         allIngredients.each(function () {
-            let id = $(this).attr('id');
+            let id = $(this).attr("id");
             let array = id.split("_");
             let index = array[2];
             listIndexIngredients.push(index);
@@ -300,11 +299,11 @@ const addRecipeForm = {
             if (addRecipeForm.checkNameIngredient(listIndexIngredients[i]) == false) {
                 e.preventDefault();
             }
-            $department.removeAttr('disabled');
+            $department.removeAttr("disabled");
 
             if (addRecipeForm.checkDepartment(listIndexIngredients[i]) == false) {
                 e.preventDefault();
-                $department.attr('disabled')
+                $department.attr("disabled")
 
             }
         };
@@ -352,12 +351,12 @@ const addRecipeForm = {
 
     convertToNumber(value) {
         //passer de 0,5 à 0.5
-        if (value.includes(',')) {
-            $result = value.replace(',', '.');
+        if (value.includes(",")) {
+            $result = value.replace(",", ".");
             return $result;
         }
         //passer de 1/2 à 0.5
-        else if (value.includes('/')) {
+        else if (value.includes("/")) {
             var $fraction = value.split("/");
             var UpNumber = $fraction[0];
             var bottomNimber = $fraction[1];

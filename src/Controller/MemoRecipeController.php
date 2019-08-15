@@ -212,7 +212,6 @@ class MemoRecipeController extends AbstractController
                 }
             }
             $manager->persist($recipe);
-            dump($recipe);
             $manager->flush();
 
             return $this->redirectToRoute('show-recipe', ['id' => $recipe->getId()]);

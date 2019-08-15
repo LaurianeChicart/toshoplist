@@ -1,15 +1,15 @@
 const planningForm = {
-    form: '',
-    formSubmit: '',
-    dayLabels: '',
-    dayCollection: '',
-    mealCollection: '',
-    days: '',
-    plannedMealRecipe: '',
-    plannedMealPortion: '',
-    editMode: '',
-    modalSubmit: '',
-    confirmSubmit: '',
+    form: "",
+    formSubmit: "",
+    dayLabels: "",
+    dayCollection: "",
+    mealCollection: "",
+    days: "",
+    plannedMealRecipe: "",
+    plannedMealPortion: "",
+    editMode: "",
+    modalSubmit: "",
+    confirmSubmit: "",
 
     constructor(form, formSubmit, dayLabels, dayCollection, mealCollection, days, plannedMealRecipe, plannedMealPortion, editMode, modalSubmit, confirmSubmit) {
         this.form = form;
@@ -36,8 +36,8 @@ const planningForm = {
             children: [
                 {
                     selector: mealCollection,
-                    add: '<a class="btn btn-default btn-secondary" href="#" title="Ajouter un repas">Ajouter un repas <span class="fas fa-plus"></span></a></a> ',
-                    remove: '<a class="btn btn-default btn-secondary" href="#" title="Supprimer ce repas"><span class="fas fa-times"></span></a>',
+                    add: '<a class="btn btn-default btn-secondary text-white mb-3" href="#" title="Ajouter un repas"><span class="fas fa-plus"></span> Ajouter un repas</a>',
+                    remove: '<a class="btn btn-default btn-dark" href="#" title="Supprimer ce repas"><span class="fas fa-times"></span></a>',
                     allow_up: false,
                     allow_down: false,
                     min: 0,
@@ -55,12 +55,12 @@ const planningForm = {
         if ($(planningForm.form + " span.invalid-feedback").length > 0) {
             $(planningForm.form + " span.invalid-feedback").each(function () {
                 $(this).remove();
-            })
+            });
         }
         if ($(".is-invalid").length > 0) {
             $(".is-invalid").each(function () {
                 $(this).removeClass("is-invalid");
-            })
+            });
         }
         if ($(planningForm.plannedMealRecipe).length < 1) {
             e.preventDefault();
@@ -70,7 +70,7 @@ const planningForm = {
             n++;
         }
         $(planningForm.plannedMealRecipe).each(function () {
-            if (($.trim($(this).val())) == '') {
+            if (($.trim($(this).val())) == "") {
                 e.preventDefault();
                 let $errorMessage = "<span class='invalid-feedback d-block'><span class='d-block'><span class='form-error-icon badge badge-danger text-uppercase'>Erreur</span><span class='form-error-message'> Chaque repas doit désigner une recette</span></span></span>";
                 $(planningForm.form).prepend($errorMessage);
@@ -80,7 +80,7 @@ const planningForm = {
             }
         });
         $(planningForm.plannedMealPortion).each(function () {
-            if (($.trim($(this).val())) == '' || isNaN(this.value)) {
+            if (($.trim($(this).val())) == "" || isNaN(this.value)) {
                 e.preventDefault();
                 let $errorMessage = "<span class='invalid-feedback d-block'><span class='d-block'><span class='form-error-icon badge badge-danger text-uppercase'>Erreur</span><span class='form-error-message'> Chaque repas doit indiquer le nombre de parts (nombre entier)</span></span></span>";
                 $(planningForm.form).prepend($errorMessage);
@@ -128,10 +128,12 @@ const planningForm = {
                     break;
                 case 6:
                     dayWeek = "samedi";
+                    break;
             };
             switch (date.getDate()) {
                 case 1:
                     day = "1er";
+                    break;
             }
             switch (date.getMonth()) {
                 case 0:
@@ -169,7 +171,7 @@ const planningForm = {
                     break;
                 case 11:
                     month = "décembre";
-
+                    break;
             };
 
             formatedDates.push("Repas du " + dayWeek + " " + day + " " + month);
@@ -180,8 +182,6 @@ const planningForm = {
             this.dayLabels[i].textContent = formatedDates[i];
         }
     }
-
-
 }
 
 

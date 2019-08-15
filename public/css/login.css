@@ -1,0 +1,63 @@
+#connexion-form{
+    padding: 20px;
+    margin-top: 100px;
+}
+/* Le container de l'input checkbox */
+.remember-me {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 1em;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Masque le checkbox par défaut */
+.remember-me input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* On personnalise la checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  border-radius: 5px;
+  background-color:white;
+  }
+
+    
+/* Création du marqueur de checked... */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* ...qui apparaît quand la case est cheched*/
+.remember-me input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Apparence du marqueur */
+.remember-me .checkmark:after {
+  left: 8px;
+  top: 2px;
+  width: 10px;
+  height: 15px;
+  border: solid #495057;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}

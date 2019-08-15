@@ -8,7 +8,7 @@
     <br>
     <div class="row">
         <div class="col-lg-6 mx-auto">
-            <h2>Créer un planning</h2>
+            <h2 class="title">Créer un planning</h2><br>
             {% if user.recipes|length == 0 %}
                 <p>Pour créer un planning, vous devez commencer par créer des pages recettes.</p>
                 <div>
@@ -27,7 +27,7 @@
                         <input class="form-control" id="stopDate" name="stopDate" placeholder="jj/mm/aaaa" type="date">
                     </div>
                     <div class="text-right">
-                        <button class="btn btn-primary" type="submit">Continuer</button>
+                        <button class="btn btn-primary text-white shadow" type="submit">Continuer</button>
                     </div>
                 </form>
 
@@ -36,7 +36,7 @@
     </div>
 
     {% block javascripts %}
-        <script src="{{ asset('js/create-planning.js') }}"></script>
+        <script src="{{ asset('js/create-planning.min.js') }}"></script>
         <script>
             datesForm.constructor($('form[name=dateIntervalForm]'), $("#startDate"), $("#stopDate"));
         </script>

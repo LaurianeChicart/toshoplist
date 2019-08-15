@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+        <title>
+            {% block title %}{% endblock %}
+        </title>
+
+        <!-- favicon-->
+        <link
+        rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}"/>
+        <!-- pas d'indexation moteurs de recherche-->
+        <meta
+        content="noindex" name="robots">
+
+        <!--metatag content-->
+        <meta
+        content="ToShopList est une application web qui vous permet de planifier vos repas et d'obtenir la liste de courses correspondante." name="description">
+
+        <!--metatags og (fb)-->
+        <meta content="ToShopList" property="og:title"/>
+        <meta content="website" property="og:type"/>
+        <meta content="http://projet5.mesmodulesdevalidationoc.fr/" property="og:url"/>
+        <meta content="{{ asset('images/logo-toshoplist-gm.png') }}" property="og:image"/>
+        <meta
+        content="ToShopList est une application web qui vous permet de planifier vos repas et d'obtenir la liste de courses correspondante." property="og:description"/>
+
+        <!--metatags twitter-->
+        <meta content="summary_large_image" name="twitter:card">
+        <meta content="ToShopList" name="twitter:title">
+        <meta content="ToShopList est une application web qui vous permet de planifier vos repas et d'obtenir la liste de courses correspondante." name="twitter:description">
+        <meta content="{{ asset('images/logo-toshoplist-gm.png') }}" name="twitter:image">
+
+        <link href="{{ asset('css/bootstrap/compiled/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/style.min.css') }}" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans|Permanent+Marker&display=swap" rel="stylesheet"> {% block stylesheets %}{% endblock %}
+
+
+        <script crossorigin="anonymous" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script crossorigin="anonymous" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script crossorigin="anonymous" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/d36a8700a0.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg bg-secondary text-white static-top">
+            <div class="container-fluid">
+                <p>
+                    <a class="navbar-brand d-flex align-items-center" href="{{ path('security_registration') }}">
+                        <img alt="Logo de ToShopList" src="{{ asset('images/logo-toshoplist.png') }}" id="logo"><strong class="title text-white" id="logo-title">
+                            ToShopList</strong>
+                    </a>
+                </p>
+                <a class="btn btn-primary btn-lg text-white font-weight-bold shadow" href="{{ path('security_login') }}">Connexion</a>
+            </div>
+        </nav>
+        <div>
+            {% block body %}{% endblock %}
+        </div>
+
+
+        <footer class="bg-secondary d-flex justify-content-center align-items-center">
+            <div class="text-white text-center">
+                <p>
+                    <a href="{{ path('legal-mentions') }}" class="text-white">Mention légales</a>
+                    -
+                    <a href="{{ path('contact') }}" class="text-white">Contact</a>
+
+                </p>
+                <p>© 2019 - ToShopList, Tous droits réservés</p>
+            </div>
+        </footer>
+
+        <div class="bg-danger fixed-bottom" id="please-active-js">
+            <div class="container text-white font-weight-bold p-2">
+                <span class="fas fa-exclamation-triangle"></span>
+                IMPORTANT La navigation sur ce site nécessite l'activation de javascript !
+            </div>
+        </div>
+
+        <script src="{{ asset('js/please-active-js.min.js') }}"></script>
+        <script>
+            hideActiveJsMessage.constructor('please-active-js');
+        </script>
+    </body>
+</html>

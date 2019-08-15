@@ -18,7 +18,7 @@ class MemoType extends AbstractType
                 TextType::class,
                 [
                     'trim' => true,
-                    'attr' => ['required' => 'required', 'value' => '', 'placeholder' => 'Ajouter...', 'class' => 'js-addInput'],
+                    'attr' => ['required' => 'required', 'value' => '', 'placeholder' => 'Ajouter...', 'class' => 'js-addInput form-control', "aria-describedby" => "addItem"],
                     'label' => false
                 ]
             );
