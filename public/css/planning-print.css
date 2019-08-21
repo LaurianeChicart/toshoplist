@@ -1,0 +1,40 @@
+@page { 
+    size: landscape; 
+};
+
+*:not(div .corpus){
+    display: none;
+}
+.d-flex{
+    display: none !important; 
+}
+#print-btn, img {
+    display: none;
+}
+.corpus{
+    margin: 0;
+    word-wrap: break-word;
+}
+body{
+    background-color: white;
+    /* selon paramètres navigateur */
+    width: auto;
+    margin: auto;
+}
+div .planning-head{
+    justify-content: center;
+}
+h3{
+    text-align: center;
+}
+div .col-lg-3{
+    flex: 0 0 20%;
+    max-width: 20%;
+}
+div .meal{
+    padding-bottom: 0!important;
+}
+p{
+    margin-bottom: 0;
+    line-height: 1.3em;
+}

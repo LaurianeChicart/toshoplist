@@ -306,7 +306,7 @@ class PlanningController extends AbstractController
     }
 
     /**
-     * @Route("/moncompte/mon-planning-pdf/{id}", name="planning-pdf")
+     * @Route("/moncompte/mon-planning-pdf/{id}", name="planning-pdf-1")
      */
     public function showPlanningPDF($id, PlanningRepository $planningRepo)
     {
@@ -333,8 +333,22 @@ class PlanningController extends AbstractController
         $dompdf->render();
 
         // et affichage
-        $dompdf->stream("mypdf.pdf", [
+        $dompdf->stream("toshoplist.pdf", [
             "Attachment" => false,
+        ]);
+    }
+    /**
+     * @Route("/moncompte/mon-planning/{id}", name="planning")
+     */
+    public function showPlanning($id, PlanningRepository $planningRepo)
+    {
+        if (!$planningRepo->findOneBy(['id' => $id]) || $planningRepo->findOneBy(['id' => $id])->getUser() != $this->getUser()) {
+            throw $this->createNotFoundException("Le planning demandé n'existe pas.");
+        } else {
+            $planning = $planningRepo->findOneBy(['id' => $id]);
+        }
+        return $this->render('main/shoplist/one-planning.twig', [
+            'planning' => $planning,
         ]);
     }
 

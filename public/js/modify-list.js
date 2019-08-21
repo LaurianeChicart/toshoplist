@@ -8,8 +8,9 @@ const listForm = {
     departmentNames: "",
     form: "",
     itemName: "",
+    itemInitialQuantities: "",
 
-    constructor(departmentCollection, departmentPosition, itemCollection, itemPosition, departmentLabels, departmentNames, form, itemName) {
+    constructor(departmentCollection, departmentPosition, itemCollection, itemPosition, departmentLabels, departmentNames, form, itemName, itemInitialQuantities) {
         this.departmentCollection = departmentCollection;
         this.departmentPosition = departmentPosition;
         this.itemCollection = itemCollection;
@@ -18,6 +19,7 @@ const listForm = {
         this.departmentNames = departmentNames;
         this.form = form;
         this.itemName = itemName;
+        this.itemInitialQuantities = itemInitialQuantities;
 
         //mise en place des noms de rayon
         this.departmentLabels.each(function () {
@@ -74,6 +76,8 @@ const listForm = {
 
     checkForm(e) {
 
+        listForm.itemInitialQuantities.removeAttr("disabled");
+
         if ($(listForm.form + " span.invalid-feedback").length > 0) {
             $(listForm.form + " span.invalid-feedback").each(function () {
                 $(this).remove();
@@ -86,6 +90,7 @@ const listForm = {
         }
         if (listForm.itemName.length < 1) {
             e.preventDefault();
+            listForm.itemInitialQuantities.attr("disabled", true);
             let $errorMessage = "<span class='invalid-feedback d-block'><span class='d-block'><span class='form-error-icon badge badge-danger text-uppercase'>Erreur</span><span class='form-error-message'> Votre liste ne peut être validée car elle est vide</span></span></span><br>";
             $(listForm.form).prepend($errorMessage);
             window.scrollTo(0, 0);
@@ -93,6 +98,7 @@ const listForm = {
         listForm.itemName.each(function () {
             if (($.trim($(this).val())) == "") {
                 e.preventDefault();
+                listForm.itemInitialQuantities.attr("disabled", true);
                 let $errorMessage = "<span class='invalid-feedback d-block'><span class='d-block'><span class='form-error-icon badge badge-danger text-uppercase'>Erreur</span><span class='form-error-message'> Tous les éléments de la liste doivent avoir un nom</span></span></span><br>";
                 $(listForm.form).prepend($errorMessage);
                 $(this).addClass("is-invalid");

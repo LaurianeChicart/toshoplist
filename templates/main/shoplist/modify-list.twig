@@ -8,36 +8,36 @@
 
 
 {% block body %}
-    <br>
-    <div class="row">
-        <div class="col-lg-9 col-xl-8 mx-auto">
-            <h2 class="title">Modifier ma ToShopList</h2><br>
-            <p>Sur cette page vous retrouvez tous les ingrédients nécessaires à la réalisation des recettes prévues dans le planning ainsi que le contenu de votre mémo. La liste est modulable. En effet, vous pouvez :
-            </p>
-            <ul class="customized-ul">
-                <li>ajuster les quantités qui apparaîtront sur la liste de course pour chaque élément en fonction de vos besoins. Pour vous y aider, les quantités initiales par repas (avant cumul) sont indiquées sous chaque ingrédient.
-                </li>
-                <li>ajouter, supprimer ou déplacer les éléments dans leur rayon</li>
-                <li>déplacer les rayons dans l'ordre que vous souhaitez</li>
-            </ul>
-            <p>N'oubliez pas d'enregistrer vos modifications !</p><br>
-            {%
+    <div class="container corpus">
+        <div class="row">
+            <div class="col-lg-9 col-xl-8 mx-auto">
+                <h2 class="title">Modifier ma ToShopList</h2><br>
+                <p>Sur cette page vous retrouvez tous les ingrédients nécessaires à la réalisation des recettes prévues dans le planning ainsi que le contenu de votre mémo. La liste est modulable. En effet, vous pouvez :
+                </p>
+                <ul class="customized-ul">
+                    <li>ajuster les quantités qui apparaîtront sur la liste de course pour chaque élément en fonction de vos besoins. Pour vous y aider, les quantités initiales par repas (avant cumul) sont indiquées sous chaque ingrédient.
+                    </li>
+                    <li>ajouter, supprimer ou déplacer les éléments dans leur rayon</li>
+                    <li>déplacer les rayons dans l'ordre que vous souhaitez</li>
+                </ul>
+                <p>N'oubliez pas d'enregistrer vos modifications !</p><br>
+                {%
                 form_theme form
                 'jquery.collection.html.twig'
                 'list-theme.html.twig'
             %}
-            {{ form(form) }}
-                <br><br><br>
-                <div class="js-listDepartment" data-is-authenticated="{{ departmentNames }}"></div>
+                {{ form(form) }}
+
+                    <div class="js-listDepartment" data-is-authenticated="{{ departmentNames }}"></div>
+                </div>
             </div>
         </div>
-
         {% block javascripts %}
             <script src="{{ asset('js/jquery.collection.min.js') }}"></script>
             <script src="{{asset('js/jquery-ui.min.js')}}"></script>
             <script src="{{ asset('js/modify-list.min.js') }}"></script>
             <script>
-                listForm.constructor($('.department-collection'), '.my-position-department', '.item-collection', '.my-position-item', $('.label-department label'), JSON.parse(document.querySelector('.js-listDepartment').dataset.isAuthenticated), "form[name='form']", $(".item-name"));
+                listForm.constructor($('.department-collection'), '.my-position-department', '.item-collection', '.my-position-item', $('.label-department label'), JSON.parse(document.querySelector('.js-listDepartment').dataset.isAuthenticated), "form[name='form']", $(".item-name"), $(".item-initial-quantities"));
             </script>
 
         {% endblock %}

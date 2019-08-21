@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ToShopList - Modifier mes données
+{% endblock %}
+
+{% block body %}
+    <div class="container corpus">
+        <div class="row">
+            <div class="col-lg-6 mx-auto">
+
+                <h2 class="title">Modifier mes identifiants</h2>
+                {{ form_start(form) }}
+                {% form_theme form 'bootstrap_4_layout.html.twig' %}
+                {{ form_row(form.email, {'attr': {'placeholder': '{{ app.user.username }}'} }) }}
+                {% if errorMessage %}
+                    <span class="invalid-feedback d-block">
+                        <span class="d-block">
+                            <span class="form-error-icon badge badge-danger text-uppercase">Error</span>
+                            <span class="form-error-message">
+                                {{ errorMessage }}</span>
+                        </span>
+                    </span>
+                {% endif %}
+
+                {{ form_row(form.current_password) }}
+                {{ form_row(form.new_password) }}
+                {{ form_row(form.confirm_new_password) }}
+
+                <button class="btn btn-primary float-right text-white shadow mb-4 mt-3" type="submit">Enregistrer les modifications</button>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+    {% block javascripts %}
+        <script src="{{asset('js/user-datas.min.js')}}"></script>
+        <script>
+            userDatasForm.constructor($("form[name='user_datas']"), "user_datas_email", "user_datas_current_password", "user_datas_new_password", "user_datas_confirm_new_password");
+        </script>
+    {% endblock %}
+
+{% endblock %}

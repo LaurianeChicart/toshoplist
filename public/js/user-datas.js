@@ -77,7 +77,7 @@ const userDatasForm = {
             data: data,
             dataType: "json",
             success: function (reponse) {
-                let $successMessage = $("<p class='valid-feedback d-block'><span class='d-block'><span class='form-success-icon badge badge-success text-uppercase'>Succès</span><span class='form-success-message'> " + reponse.message + "</span></span></p>");
+                let $successMessage = $("<p class='valid-feedback d-block text-primary'><span class='d-block'><span class='form-primary-icon badge badge-primary text-uppercase'>Succès</span><span class='form-primary-message'> " + reponse.message + "</span></span></p>");
                 $successMessage.prependTo(userDatasForm.form);
                 $("#" + userDatasForm.currentPassword).val("");
                 $("#" + userDatasForm.newPassword).val("");

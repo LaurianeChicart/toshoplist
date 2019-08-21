@@ -46,7 +46,7 @@ class SecurityController extends AbstractController
                 return $this->redirectToRoute('security_login');
             }
 
-            return $this->render('security/home.html.twig', [
+            return $this->render('security/home.twig', [
                 'form' => $form->createView()
             ]);
         }
@@ -115,7 +115,7 @@ class SecurityController extends AbstractController
             $errorMessage = null;
         }
 
-        return $this->render('security/user_datas.html.twig', [
+        return $this->render('security/user_datas.twig', [
             'form' => $form->createView(),
             'errorMessage' => $errorMessage
         ]);
@@ -173,21 +173,21 @@ class SecurityController extends AbstractController
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-primary float-right text-white shadow mb-4 mt-3'],
-                'label' => 'Valider la liste'
+                'label' => 'Envoyer'
             ])
             ->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $email = htmlspecialchars($request->request->get('email'));
-            $subject = htmlspecialchars($request->request->get('subject'));
-            $message = htmlspecialchars($request->request->get('message'));
+            $email = trim(htmlspecialchars(($request->request->get('form'))["email"]));
+            $subject = trim(htmlspecialchars(($request->request->get('form'))["subject"]));
+            $message = trim(htmlspecialchars(($request->request->get('form'))["message"]));
 
-            if ($email != "" && $subject != "" && $message != "") {
+            if (!empty($email) && !empty($subject) && !empty($message)) {
                 $mail = (new \Swift_Message('ToShopList : ' . $subject))
                     ->setFrom($email)
-                    ->setTo('chicartlauriane@gmail.com')
+                    ->setTo('contact@mesmodulesdevalidationoc.fr')
                     ->setBody(
                         $this->renderView(
                             'emails/contact.html.twig',
@@ -207,12 +207,12 @@ class SecurityController extends AbstractController
                 ], 200);
             } else {
                 return $this->json([
-                    'message' => "Mot de passe incorrect",
+                    'message' => "Envoi impossible",
                 ], 403);
             }
         }
 
-        return $this->render('security/contact.html.twig', [
+        return $this->render('security/contact.twig', [
             'authentified' => $this->getUser() !== null,
             'form' => $form->createView()
         ]);

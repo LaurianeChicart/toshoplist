@@ -61,13 +61,13 @@ const contactForm = {
                 data: data,
                 dataType: "json",
                 success: function (reponse) {
-                    let $successMessage = $("<p class='valid-feedback d-block'><span class='d-block'><span class='form-success-icon badge badge-success text-uppercase'>Succès</span><span class='form-success-message'> " + reponse.message + "</span></span></p>");
+                    let $successMessage = $("<p class='valid-feedback d-block text-primary'><span class='d-block'><span class='form-primary-icon badge badge-primary text-uppercase'>Succès</span><span class='form-primary-message'> " + reponse.message + "</span></span></p>");
                     $successMessage.prependTo(contactForm.form);
                     $("#" + contactForm.subject).val("");
                     $("#" + contactForm.message).val("");
                 },
                 error: function (reponse) {
-                    let $noSuccessMessage = $("<p class='invalid-feedback d-block'><span class='d-block'><span class='form-error-icon badge badge-danger text-uppercase'>Erreur</span><span class='form-error-message'> Veuillez remplir tous les champs</span></span></p>");
+                    let $noSuccessMessage = $("<p class='invalid-feedback d-block'><span class='d-block'><span class='form-error-icon badge badge-danger text-uppercase'>Erreur</span><span class='form-error-message'> Envoi impossible</span></span></p>");
                     $noSuccessMessage.prependTo(contactForm.form);
                 },
             });

@@ -53,22 +53,23 @@ const memo = {
         let selection = $(this);
         let url = selection.attr("action");
         let data = selection.serialize();
+        if ($.trim(memo.addInput.val()) != "") {
+            $.ajax({
+                url: url,
+                type: "post",
+                data: data,
+                dataType: "json",
 
-        $.ajax({
-            url: url,
-            type: "post",
-            data: data,
-            dataType: "json",
-
-            success: function (reponse) {
-                memo.listInput.append("<li><p class='item'>" + reponse.item + "<span><a class='btn btn-dark btn-sm delete float-right' href=' /moncompte/supprimer-element-memo/" + reponse.id + "'><span class='fas fa-times'></span></a></span></p></li>");
-                memo.addInput.val("");
-            },
-            complete: function () {
-                memo.deleteBtns = $(".delete");
-                memo.deleteBtns.click(memo.deleteItem);
-            }
-        });
+                success: function (reponse) {
+                    memo.listInput.append("<li class='bg-light p-1 mb-2'><p class='item'>" + reponse.item + "<span><a class='btn btn-dark btn-sm delete float-right' href=' /moncompte/supprimer-element-memo/" + reponse.id + "'><span class='fas fa-times'></span></a></span></p></li>");
+                    memo.addInput.val("");
+                },
+                complete: function () {
+                    memo.deleteBtns = $(".delete");
+                    memo.deleteBtns.click(memo.deleteItem);
+                }
+            });
+        }
 
     }
 

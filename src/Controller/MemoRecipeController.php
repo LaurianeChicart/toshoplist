@@ -32,7 +32,7 @@ class MemoRecipeController extends AbstractController
     {
         $user = $this->getUser();
 
-        return $this->render('main/dashboard.html.twig', [
+        return $this->render('main/dashboard.twig', [
             'user' => $user
         ]);
     }
@@ -61,7 +61,7 @@ class MemoRecipeController extends AbstractController
                 'id' => $memo->getId()
             ], 200);
         } else {
-            return $this->render('main/memo/memo.html.twig', [
+            return $this->render('main/memo/memo.twig', [
                 'user' => $user,
                 'form' => $form->createView(),
 
@@ -108,7 +108,7 @@ class MemoRecipeController extends AbstractController
     {
         $user = $this->getUser();
         $meals = $mealRepo->findAll();
-        return $this->render('main/recipes/my-recipes.html.twig', [
+        return $this->render('main/recipes/my-recipes.twig', [
             'user' => $user,
             'myMeals' => $meals
         ]);
@@ -232,7 +232,7 @@ class MemoRecipeController extends AbstractController
 
         $encodedList = $serializer->serialize($listIngredients, 'json', ['attributes' => ['id', 'name', 'department' => ['id'], 'userIsNull']]);
 
-        return $this->render('main/recipes/create-recipe.html.twig', [
+        return $this->render('main/recipes/create-recipe.twig', [
             'recipeType' => $form->createView(),
             'editMode' => $recipe->getId() !== null,
             'image' => $recipe->getImage(),
@@ -250,7 +250,7 @@ class MemoRecipeController extends AbstractController
         } else {
             $recipe = $recipeRepo->findOneBy(['id' => $id]);
         }
-        return $this->render('main/recipes/one-recipe.html.twig', [
+        return $this->render('main/recipes/one-recipe.twig', [
             'recipe' => $recipe,
         ]);
     }

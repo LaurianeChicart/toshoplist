@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
         <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
@@ -34,7 +34,8 @@
 
         <link href="{{ asset('css/bootstrap/compiled/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ asset('css/style.min.css') }}" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans|Permanent+Marker&display=swap" rel="stylesheet"> {% block stylesheets %}{% endblock %}
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap" rel="stylesheet"> {% block stylesheets %}{% endblock %}
 
 
         <script crossorigin="anonymous" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -54,9 +55,8 @@
                 <a class="btn btn-primary btn-lg text-white font-weight-bold shadow" href="{{ path('security_login') }}">Connexion</a>
             </div>
         </nav>
-        <div>
-            {% block body %}{% endblock %}
-        </div>
+
+        {% block body %}{% endblock %}
 
 
         <footer class="bg-secondary d-flex justify-content-center align-items-center">

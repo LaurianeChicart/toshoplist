@@ -8,48 +8,48 @@
 {% endblock %}
 
 {% block body %}
-    <br>
-    <h2 class="title">
-        {% if editMode %}
-            Modifier une recette
-        {% else %}
-            Créer une recette
-        {% endif %}
-    </h2><br>
+    <div class="container corpus">
+        <h2 class="title">
+            {% if editMode %}
+                Modifier une recette
+            {% else %}
+                Créer une recette
+            {% endif %}
+        </h2><br>
 
-    {% form_theme recipeType
+        {% form_theme recipeType
        'jquery.collection.html.twig'
         'recipe-theme.html.twig'   
      %}
 
-    {{ form_start(recipeType) }}
-    {{ form_row(recipeType) }}
-    <div class="row">
-        <div class="col offset-md-6">
-            {% if image %}
-                <p>Image actuelle (avant enregistrement) :</p>
-                <div><img alt='Image associée à la recette' src="{{ asset('uploads/images/' ~ image) | imagine_filter('my_thumb')}}"></div>
-            {% endif %}
+        {{ form_start(recipeType) }}
+        {{ form_row(recipeType) }}
+        <div class="row">
+            <div class="col offset-md-6">
+                {% if image %}
+                    <p>Image actuelle (avant enregistrement) :</p>
+                    <div><img alt='Image associée à la recette' src="{{ asset('uploads/images/' ~ image) | imagine_filter('my_thumb')}}"></div>
+                {% endif %}
+            </div>
+        </div><br>
+
+        <small>* Champs obligatoires</small><br><br>
+
+        <div class="text-right">
+            <button class="btn btn-primary text-white shadow" type="submit">
+                {% if editMode %}
+                    Enregistrer les modifications
+                {% else %}
+                    Ajouter la recette
+                {% endif %}
+            </button>
         </div>
-    </div><br>
+        {{ form_end(recipeType) }}
 
-    <small>* Champs obligatoires</small><br><br>
-
-    <div class="text-right">
-        <button class="btn btn-primary text-white shadow" type="submit">
-            {% if editMode %}
-                Enregistrer les modifications
-            {% else %}
-                Ajouter la recette
-            {% endif %}
-        </button>
+        <div
+            class="js-listIngredients" data-is-authenticated="{{ listIngredients }}"><!-- ... -->
+        </div>
     </div>
-    {{ form_end(recipeType) }}
-    <br>
-    <div
-        class="js-listIngredients" data-is-authenticated="{{ listIngredients }}"><!-- ... -->
-    </div>
-
     {% block javascripts %}
 
         <script src="{{ asset('js/jquery.collection.min.js') }}"></script>

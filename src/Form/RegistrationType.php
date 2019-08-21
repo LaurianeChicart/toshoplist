@@ -16,17 +16,16 @@ class RegistrationType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'trim' => true,
-                'attr' => ['required' => true],
             ])
             ->add('password', PasswordType::class, [
                 'label' => 'Mot de passe',
                 'trim' => true,
-                'attr' => ['required' => true],
+                'attr' => ['autocomplete' => 'on'],
             ])
             ->add('confirm_password', PasswordType::class, [
                 'label' => 'Confirmation du mot de passe',
                 'trim' => true,
-                'attr' => ['required' => true],
+                'attr' => ['autocomplete' => 'on'],
             ]);
     }
 

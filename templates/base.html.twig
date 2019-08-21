@@ -8,7 +8,8 @@
         </title>
         <link href="{{ asset('css/bootstrap/compiled/bootstrap.min.css') }}" rel="stylesheet">
         <script src="https://kit.fontawesome.com/d36a8700a0.js"></script>
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans|Permanent+Marker&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap" rel="stylesheet">
         <link href="{{ asset('css/style.min.css') }}" rel="stylesheet"> {% block stylesheets %}{% endblock %}
 
         <!-- favicon-->
@@ -59,31 +60,30 @@
                 </div>
             </div>
         </nav>
-        <div class="container corpus"> {% block body %}{% endblock %}
-            </div><br>
+        {% block body %}{% endblock %}
 
-            <footer class="bg-secondary d-flex justify-content-center align-items-center">
-                <div class="text-white text-center">
-                    <p>
-                        <a href="{{ path('legal-mentions') }}" class="text-white">Mention légales</a>
-                        -
-                        <a href="{{ path('contact') }}" class="text-white">Contact</a>
+        <footer class="bg-secondary d-flex justify-content-center align-items-center">
+            <div class="text-white text-center">
+                <p>
+                    <a href="{{ path('legal-mentions') }}" class="text-white">Mention légales</a>
+                    -
+                    <a href="{{ path('contact') }}" class="text-white">Contact</a>
 
-                    </p>
-                    <p>© 2019 - ToShopList, Tous droits réservés</p>
-                </div>
-            </footer>
-
-            <div class="bg-danger fixed-bottom" id="please-active-js">
-                <div class="container text-white font-weight-bold p-2">
-                    <span class="fas fa-exclamation-triangle"></span>
-                    IMPORTANT La navigation sur ce site nécessite l'activation de javascript !
-                </div>
+                </p>
+                <p>© 2019 - ToShopList, Tous droits réservés</p>
             </div>
+        </footer>
 
-            <script src="{{ asset('js/please-active-js.min.js') }}"></script>
-            <script>
-                hideActiveJsMessage.constructor('please-active-js');
-            </script>
-        </body>
-    </html>
+        <div class="bg-danger fixed-bottom" id="please-active-js">
+            <div class="container text-white font-weight-bold p-2">
+                <span class="fas fa-exclamation-triangle"></span>
+                IMPORTANT La navigation sur ce site nécessite l'activation de javascript !
+            </div>
+        </div>
+
+        <script src="{{ asset('js/please-active-js.min.js') }}"></script>
+        <script>
+            hideActiveJsMessage.constructor('please-active-js');
+        </script>
+    </body>
+</html>

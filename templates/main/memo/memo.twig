@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}ToShopList - Mémo
+{% endblock %}
+
+{% block body %}
+    <div class="container corpus">
+        <div class="row">
+            <div class="col-lg-6 mx-auto">
+                <h3 class="title">Mon mémo</h3><br>
+                <p>Les éléments que vous indiquer dans le mémo seront automatiquement rajoutés à votre liste de courses.</p><br>
+
+                {% if user.memos %}
+                    <ul class="list-unstyled col" id="js-list">
+                        {% for memo in user.memos %}
+                            <li class="bg-light p-1 mb-2">
+                                <p class="item">{{ memo.item }}
+                                    <span>
+                                        <a class="btn btn-dark btn-sm delete float-right" href=" {{ path('delete_memo_item', {'id' : memo.id} ) }}" title="Supprimer l'élément">
+                                            <span class="fas fa-times"></span>
+                                        </a>
+                                    </span>
+                                </p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Rien dans le mémo</p>
+                {% endif %}
+                <br>
+                {{ form_start(form, {'action': path('memo'), 'method': 'POST'}) }}
+
+                <div class="input-group mb-3">
+                    {{ form_widget(form) }}
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary text-white" id="addItem" type="submit">
+                            <span class="fas fa-plus"></span>
+                        </button>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+                <br>
+                <div class="text-right">
+                    <a class=" btn btn-dark text-white shadow" href=" {{ path('reset_memo') }} " id="reset">Vider le mémo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block javascripts %}
+        <script src="{{ asset('js/memo.min.js') }}"></script>
+        <script>
+            memo.constructor($('form[name="memo"]'), $(".js-addInput"), $("#js-list"), $(".delete"), $("#reset"));
+        </script>
+
+    {% endblock %}
+{% endblock %}

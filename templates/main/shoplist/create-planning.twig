@@ -5,36 +5,36 @@
 
 
 {% block body %}
-    <br>
-    <div class="row">
-        <div class="col-lg-6 mx-auto">
-            <h2 class="title">Créer un planning</h2><br>
-            {% if user.recipes|length == 0 %}
-                <p>Pour créer un planning, vous devez commencer par créer des pages recettes.</p>
-                <div>
-                    <a href="{{ path('create-recipe') }}" class="btn btn-primary">Ajouter une recette</a>
-                </div>
-            {% else %}
-                <p>Sélectionnez les dates de la période concernée :</p>
+    <div class="container corpus">
+        <div class="row">
+            <div class="col-lg-6 mx-auto">
+                <h2 class="title">Créer un planning</h2><br>
+                {% if user.recipes|length == 0 %}
+                    <p>Pour créer un planning, vous devez commencer par créer des pages recettes.</p>
+                    <div>
+                        <a href="{{ path('create-recipe') }}" class="btn btn-primary">Ajouter une recette</a>
+                    </div>
+                {% else %}
+                    <p>Sélectionnez les dates de la période concernée :</p>
 
-                <form action="{{ path('create-planning') }}" method="POST" name="dateIntervalForm">
-                    <div class="form-group">
-                        <label for="startDate">Premier jour</label>
-                        <input class="form-control" id="startDate" name="startDate" placeholder="jj/mm/aaaa" type="date">
-                    </div>
-                    <div class="form-group">
-                        <label for="stopDate">Dernier jour</label>
-                        <input class="form-control" id="stopDate" name="stopDate" placeholder="jj/mm/aaaa" type="date">
-                    </div>
-                    <div class="text-right">
-                        <button class="btn btn-primary text-white shadow" type="submit">Continuer</button>
-                    </div>
-                </form>
+                    <form action="{{ path('create-planning') }}" method="POST" name="dateIntervalForm">
+                        <div class="form-group">
+                            <label for="startDate">Premier jour</label>
+                            <input class="form-control" id="startDate" name="startDate" placeholder="jj/mm/aaaa" type="date">
+                        </div>
+                        <div class="form-group">
+                            <label for="stopDate">Dernier jour</label>
+                            <input class="form-control" id="stopDate" name="stopDate" placeholder="jj/mm/aaaa" type="date">
+                        </div>
+                        <div class="text-right">
+                            <button class="btn btn-primary text-white shadow" type="submit">Continuer</button>
+                        </div>
+                    </form>
 
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
     </div>
-
     {% block javascripts %}
         <script src="{{ asset('js/create-planning.min.js') }}"></script>
         <script>

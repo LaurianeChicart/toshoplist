@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ToShopList - Mon planning
+{% endblock %}
+{% block stylesheets %}
+    <link href="{{asset('css/planning-print.min.css')}}" media="print" rel="stylesheet" type="text/css">
+{% endblock %}
+
+
+{% block body %}
+    <div class="container corpus">
+        <div class="d-sm-flex justify-content-sm-between planning-head">
+            <h3 class="title">Planning du
+                {{ planning.day[0].date| date('d/m/Y') }}
+                au
+                {{ planning.day[(planning.day | length) - 1].date| date('d/m/Y') }}</h3>
+            <button class="btn btn-primary text-white shadow" id="print-btn">Imprimer</button>
+        </div>
+
+        <br>
+
+        <div class="row">
+            {% for day in planning.day %}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                    <div class="rounded border border-primary">
+
+                        <div class="bg-primary text-white title p-2">
+                            {{ day.date | localizeddate('none', 'none', 'fr', null, 'EEEE dd/MM')}}
+                        </div>
+
+                        {% for meal in day.plannedMeal %}
+                            <div class="p-2 meal">
+                                <p class="font-weight-bold">
+                                    {% if meal.description %}
+                                        {{ meal.description }}
+                                    {% else %}
+                                        {{ meal.recipe.meal.type }}
+                                    {% endif %}
+                                    ({{ meal.portion }}
+                                    {% if meal.portion < 2 %}
+                                        part)
+                                    {% else %}
+                                        parts)
+                                    {% endif %}
+                                </p>
+                                <div class="text-center">
+                                    <a href="{{ path('show-recipe', {'id' : meal.recipe.id}) }}" title="Voir la page recette" target="_blank" class="text-decoration-none text-secondary">
+                                        <p>{{ meal.recipe.name }}</p>
+                                        {% if meal.recipe.image %}
+                                            <img alt='Image de "{{ meal.recipe.name }}"' class="img-fluid" src="{{ asset('images/uploads/' ~ meal.recipe.image) | imagine_filter('my_thumb')}}">
+                                        {% else %}
+                                            <img alt='Image de "{{ meal.recipe.name }}"' class="img-fluid" src="{{ asset('images/toshoplist-recipe.png')}}">
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% block javascripts %}
+        <script>
+            $("#print-btn").on("click", function () {
+                window.print();
+            });
+        </script>
+    {% endblock %}
+{% endblock %}

@@ -13,8 +13,8 @@
             <div class="row text-white">
                 <div class="col-lg-6 d-flex align-items-center">
                     <div class="reveal-1" id="presentation-titles">
-                        <h2 class="title">Bienvenue sur le site de ToShopList !</h1>
-                        <h1>Planifiez vos repas et obtenez la liste de courses correspondante.</h2>
+                        <h2 class="title">Bienvenue sur le site de ToShopList !</h2>
+                        <h1>Planifiez vos repas et obtenez la liste de courses correspondante.</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 d-flex align-items-center">
@@ -24,8 +24,8 @@
                         {{ form_start(form) }}
                         {% form_theme form 'bootstrap_4_layout.html.twig' %}
                         {{ form_row(form.email, {'attr': {'placeholder': 'adresse@mail.com'}}) }}
-                        {{ form_row(form.password, {'attr': {'autocomplete': true}}) }}
-                        {{ form_row(form.confirm_password, {'attr': {'autocomplete': true}}) }}
+                        {{ form_row(form.password) }}
+                        {{ form_row(form.confirm_password) }}
                         <button class="btn btn-success btn-lg float-right font-weight-bold shadow" type="submit">Créer un compte</button>
 
                         {{ form_end(form) }}

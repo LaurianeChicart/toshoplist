@@ -58,10 +58,9 @@ class ItemType extends AbstractType
         }
 
         if ($item->getInitialQuantities() != null) {
-            dump($item);
             $form->add('initial_quantities', TextType::class, [
                 'label' => false,
-                'attr' => ['class' => 'form-control', 'disabled' => true, 'formnovalidate' => true],
+                'attr' => ['class' => 'form-control item-initial-quantities', 'disabled' => true],
                 'required' => false,
             ]);
         } else {

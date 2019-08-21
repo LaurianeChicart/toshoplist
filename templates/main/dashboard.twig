@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ToShopList - Mon compte
+{% endblock %}
+
+{% block body %}
+    <div class="container corpus">
+        <h2 class="title">Mon espace</h2>
+        <br>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="bg-light shadow-sm p-4 mb-4">
+                    <h3 class="title">Ma dernière ToShopList</h3>
+                    <p>
+                        {% if user.plannings | length > 0 %}
+                            {{ user.plannings[(user.plannings | length) -1].createdAt | date('d/m/y')}}
+                            -
+                            <a href="{{ path('fill-planning', {'id' : user.plannings[(user.plannings | length) -1].id}) }}">Modifier planning</a>
+                            {% if  user.plannings[(user.plannings | length) -1].listItems %}
+                                -
+                                <a href="{{ path('planning', {'id' : user.plannings[(user.plannings | length) -1].id}) }}">Consulter planning</a>
+                            {% endif %}
+                            {% if user.plannings[(user.plannings | length) - 1].listItems %}
+                                -
+                                <a href="{{ path('shoplist', {'id' : user.plannings[(user.plannings | length) -1].listItems.id}) }}">ToShopList</a>
+                            {% endif %}
+                        {% else %}
+                            Aucun planning créé
+                        {% endif %}
+                    </p>
+
+                    <div class="text-right">
+                        <a class="btn btn-primary text-white shadow mb-2" href="{{ path('create-planning') }}">Créer un planning</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="bg-light shadow-sm p-4 mb-4">
+                    <a class="text-decoration-none text-reset" href="{{ path('recipes') }}">
+                        <h3 class="title">Mes recettes</h3>
+                        {% if user.recipes|length > 0 %}
+                            <p>Vous avez créé
+                                {{ user.recipes|length }}
+                                {% if user.recipes|length < 2 %}
+                                    recette
+                                {% else %}
+                                    recettes
+                                {% endif %}
+                            </p>
+
+                        {% else %}
+                            <p>Aucune recette créée</p>
+                        {% endif %}
+                    </a>
+                    <div class="text-right">
+                        <a class="btn btn-primary text-white shadow mb-2" href="{{ path('recipes') }}">Voir mes recettes</a>
+                        <a class="btn btn-primary text-white shadow mb-2" href="{{ path('create-recipe') }}">Ajouter une recette</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="bg-light shadow-sm p-4 mb-4">
+                    <a class="text-decoration-none text-reset" href="{{ path('memo') }}">
+                        <h3 class="title">Mon mémo</h3>
+                        {% if user.memos|length > 0 %}
+                            <p>Contenu de mon mémo :</p>
+                            <ul class="list-unstyled col">
+
+                                {% for memo in user.memos %}
+                                    <li>{{ memo.item }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>Rien dans le mémo</p>
+                        {% endif %}
+                    </a>
+                    <div class="text-right">
+                        <a class="btn btn-primary text-white shadow mb-2" href="{{ path('memo') }}">Modifier</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
