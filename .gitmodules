@@ -1,0 +1,3 @@
+[submodule "to-shop-list"]
+	path = to-shop-list
+	url = https://github.com/LaurianeChicart/toshoplist.git

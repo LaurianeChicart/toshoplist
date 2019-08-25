@@ -22,7 +22,7 @@
         <div class="row">
             {% for day in planning.day %}
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                    <div class="rounded border border-primary">
+                    <div class="rounded border border-primary shadow">
 
                         <div class="bg-primary text-white title p-2">
                             {{ day.date | localizeddate('none', 'none', 'fr', null, 'EEEE dd/MM')}}
@@ -47,9 +47,11 @@
                                     <a href="{{ path('show-recipe', {'id' : meal.recipe.id}) }}" title="Voir la page recette" target="_blank" class="text-decoration-none text-secondary">
                                         <p>{{ meal.recipe.name }}</p>
                                         {% if meal.recipe.image %}
-                                            <img alt='Image de "{{ meal.recipe.name }}"' class="img-fluid" src="{{ asset('images/uploads/' ~ meal.recipe.image) | imagine_filter('my_thumb')}}">
+                                            <img alt='Image de "{{ meal.recipe.name }}"' class="img-fluid rounded shadow" src="{{ asset('uploads/images/' ~ meal.recipe.image) | imagine_filter('my_thumb')}}">
+
                                         {% else %}
-                                            <img alt='Image de "{{ meal.recipe.name }}"' class="img-fluid" src="{{ asset('images/toshoplist-recipe.png')}}">
+                                            <img alt='Image de "{{ meal.recipe.name }}"' class="img-fluid rounded shadow" src="{{ asset('images/toshoplist-recipe.png')}}">
+
                                         {% endif %}
                                     </a>
                                 </div>

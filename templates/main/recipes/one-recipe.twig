@@ -20,7 +20,7 @@
             </div>
             <div>
                 {% if recipe.image %}
-                    <div><img alt='Image de "{{ recipe.name }}"' src="{{ asset('uploads/images/' ~ recipe.image) | imagine_filter('my_thumb')}}"></div>
+                    <div><img alt='Image de "{{ recipe.name }}"' src="{{ asset('uploads/images/' ~ recipe.image) | imagine_filter('my_thumb')}}" class="rounded shadow"></div>
                 {% endif %}
             </div>
         </div>

@@ -18,9 +18,9 @@
         </h2><br>
 
         {% form_theme recipeType
-       'jquery.collection.html.twig'
+        'jquery.collection.html.twig'
         'recipe-theme.html.twig'   
-     %}
+        %}
 
         {{ form_start(recipeType) }}
         {{ form_row(recipeType) }}
@@ -28,7 +28,8 @@
             <div class="col offset-md-6">
                 {% if image %}
                     <p>Image actuelle (avant enregistrement) :</p>
-                    <div><img alt='Image associée à la recette' src="{{ asset('uploads/images/' ~ image) | imagine_filter('my_thumb')}}"></div>
+                    <div><img alt='Image associée à la recette' src="{{ asset('uploads/images/' ~ image) | imagine_filter('my_thumb')}}" class="rounded shadow"></div>
+                    <div><img alt='Image associée à la recette' src="{{ asset('uploads/images/' ~ image) | imagine_filter('my_thumb')}}" class="rounded shadow"></div>
                 {% endif %}
             </div>
         </div><br>

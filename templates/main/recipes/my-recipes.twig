@@ -34,9 +34,9 @@
                             <div class="col-6 col-sm-4 col-md-3 col-6 col-xl-2 mb-3">
                                 <div class="shadow text-center pt-3 pb-3 recipe-card">
                                     {% if recipe.image %}
-                                        <img alt='Image de "{{ recipe.name }}"' class="img-fluid" src="{{ asset('images/uploads/' ~ recipe.image) | imagine_filter('my_thumb')}}">
+                                        <img alt='Image de "{{ recipe.name }}"' class="img-fluid rounded shadow" src="{{ asset('uploads/images/' ~ recipe.image) | imagine_filter('my_thumb')}}">
                                     {% else %}
-                                        <img alt='Image de "{{ recipe.name }}"' class="img-fluid" src="{{ asset('images/toshoplist-recipe.png')}}">
+                                        <img alt='Image de "{{ recipe.name }}"' class="img-fluid rounded shadow" src="{{ asset('images/toshoplist-recipe.png')}}">
                                     {% endif %}
                                     <div>
                                         <div class="text-center mt-2 mb-2">

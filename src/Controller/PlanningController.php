@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Day;
 use App\Entity\Item;
 use App\Form\DayType;
@@ -216,7 +215,6 @@ class PlanningController extends AbstractController
                     }
                     array_push($ingredientsGroupedById, $arrayRecipeIngredientId);
                 }
-
                 //Etape 5 : chacun de ces tableaux crées correspond à un item de la liste, on va récupérer les infos des RecipeIngredients qu'il contient pour définir ses différents attributs
                 foreach ($ingredientsGroupedById as $idIngredient) {
                     $newItem = new Item();
@@ -226,7 +224,6 @@ class PlanningController extends AbstractController
                     // on trie les différentes unités de mesures pour un même ingrédient
                     $allMeasureUnits = [];
                     foreach ($idIngredient as $recipeIngredient) {
-                        $allMeasureUnits = [];
                         $measure = $recipeIngredient[0]->getMeasure();
                         array_push($allMeasureUnits, $measure);
                     }
@@ -242,49 +239,55 @@ class PlanningController extends AbstractController
                         array_push($quantitiesGroupedByMeasure, $quantitiesByMeasure);
                     }
 
-                    // pour $newItem->setInitialQuantities(), on crée une chaîne sur le modèle "100 g + 200g + 2 tranches" 
                     $initialQuantities = [];
-                    $initialQuantitiesStringified = [];
-                    foreach ($measureUnits as $measureUnit) {
-                        $total = 0;
-                        foreach ($quantitiesGroupedByMeasure as $quantities) {
-                            foreach ($quantities as $quantity) {
-                                if ($measureUnit == "unité") {
-                                    $measureUnit = null;
-                                } else if ($quantity >= 2 && $measureUnit == "tranche") {
-                                    $measureUnit = "tranches";
-                                } else if ($quantity >= 2 && $measureUnit == "filet") {
-                                    $measureUnit = "filets";
-                                }
-                                array_push($initialQuantities, [$quantity, $measureUnit]);
-                            }
+                    // à chaque unité de mesure de l'ingrédient, on associe le tableau des quanitités concernées par cette unité
+                    for ($j = 0; $j < count($measureUnits); $j++) {
+                        if ($measureUnits[$j] == "unité") {
+                            $measureUnit = null;
+                        } else if ($measureUnits[$j] == "c à C" || $measureUnits[$j] == "c à S" || $measureUnits[$j] == "tranche" || $measureUnits[$j] == "filet") {
+                            $measureUnit = " " .  $measureUnits[$j];
+                        } else {
+                            $measureUnit = $measureUnits[$j];
                         }
-                        foreach ($initialQuantities as $quantityIngredient) {
-                            $stringifyQuantity =  implode(" ", $quantityIngredient);
-                            array_push($initialQuantitiesStringified, $stringifyQuantity);
+                        array_push($initialQuantities, [$quantitiesGroupedByMeasure[$j], $measureUnit]);
+                    }
+
+                    //pour $newItem->setInitialQuantities(), on crée une chaîne sur le modèle "200g + 100g + 2 tranches" 
+                    $initialQuantitiesStringified = [];
+                    foreach ($initialQuantities as $quantityIngredient) {
+                        foreach ($quantityIngredient[0] as $oneQuantity) {
+                            if (is_null($quantityIngredient[1])) {
+                                $quantityToAdd = $oneQuantity;
+                            } else if ($oneQuantity >= 2 && $quantityIngredient[1] == " tranche") {
+                                $quantityToAdd = $oneQuantity . " tranches";
+                            } else if ($oneQuantity >= 2 && $quantityIngredient[1] == " filet") {
+                                $quantityToAdd = $oneQuantity . " filets";
+                            } else {
+                                $quantityToAdd = $oneQuantity . $quantityIngredient[1];
+                            }
+                            array_push($initialQuantitiesStringified, $quantityToAdd);
                         }
                     }
-                    $stringifyInitialQuantities =  str_replace("  ", " ", implode(" + ",  $initialQuantitiesStringified));
+                    $stringifyInitialQuantities =  implode(" + ",  $initialQuantitiesStringified);
                     $newItem->setInitialQuantities($stringifyInitialQuantities);
 
-                    // pour $newItem->setInitialQuantities(), on crée une chaîne sur le modèle "300g + 2 tranches" 
+                    //pour $newItem->setInitialQuantities(), on crée une chaîne sur le modèle "300g + 2 tranches" 
                     $measureSumsStringified = [];
-                    foreach ($measureUnits as $measureUnit) {
-                        $total = 0;
-                        foreach ($quantitiesGroupedByMeasure as $quantities) {
-                            foreach ($quantities as $quantity) {
-                                $total = $total + $quantity;
-                            }
+                    foreach ($initialQuantities as $quantityIngredient) {
+                        $totalQuantity = 0;
+                        foreach ($quantityIngredient[0] as $oneQuantity) {
+                            $totalQuantity = $totalQuantity + $oneQuantity;
                         }
-                        if ($measureUnit == "unité") {
-                            $measureUnit = null;
-                        } else if ($total >= 2 && $measureUnit == "tranche") {
-                            $measureUnit = "tranches";
-                        } else if ($total >= 2 && $measureUnit == "filet") {
-                            $measureUnit = "filets";
+                        if (is_null($quantityIngredient[1])) {
+                            $quantityToAdd = $totalQuantity;
+                        } else if ($totalQuantity >= 2 && $quantityIngredient[1] == " tranche") {
+                            $quantityToAdd = $totalQuantity . " tranches";
+                        } else if ($oneQuantity >= 2 && $quantityIngredient[1] == " filet") {
+                            $quantityToAdd = $totalQuantity . " filets";
+                        } else {
+                            $quantityToAdd = $totalQuantity . $quantityIngredient[1];
                         }
-                        $result = $total . " " . $measureUnit;
-                        array_push($measureSumsStringified, $result);
+                        array_push($measureSumsStringified, $quantityToAdd);
                     }
                     $allSumsStringified = implode(" + ",  $measureSumsStringified);
                     $newItem->setQuantities($allSumsStringified);
@@ -305,38 +308,38 @@ class PlanningController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/moncompte/mon-planning-pdf/{id}", name="planning-pdf-1")
-     */
-    public function showPlanningPDF($id, PlanningRepository $planningRepo)
-    {
-        if (!$planningRepo->findOneBy(['id' => $id]) || $planningRepo->findOneBy(['id' => $id])->getUser() != $this->getUser()) {
-            throw $this->createNotFoundException("Le planning demandé n'existe pas.");
-        } else {
-            $planning = $planningRepo->findOneBy(['id' => $id]);
-        }
-        // Configuration Dompdf 
-        $pdfOptions = new Options();
-        $pdfOptions->set('defaultFont', 'Arial');
-        $dompdf = new Dompdf($pdfOptions);
+    // /**
+    //  * @Route("/moncompte/mon-planning-pdf/{id}", name="planning-pdf-1")
+    //  */
+    // public function showPlanningPDF($id, PlanningRepository $planningRepo)
+    // {
+    //     if (!$planningRepo->findOneBy(['id' => $id]) || $planningRepo->findOneBy(['id' => $id])->getUser() != $this->getUser()) {
+    //         throw $this->createNotFoundException("Le planning demandé n'existe pas.");
+    //     } else {
+    //         $planning = $planningRepo->findOneBy(['id' => $id]);
+    //     }
+    //     // Configuration Dompdf 
+    //     $pdfOptions = new Options();
+    //     $pdfOptions->set('defaultFont', 'Arial');
+    //     $dompdf = new Dompdf($pdfOptions);
 
-        // on génère le fichier twig
-        $html = $this->renderView('main/shoplist/planning-pdf.twig', [
-            'planning' => $planning,
-        ]);
-        // on le charge dans Dompdf
-        $dompdf->loadHtml($html);
+    //     // on génère le fichier twig
+    //     $html = $this->renderView('main/shoplist/planning-pdf.twig', [
+    //         'planning' => $planning,
+    //     ]);
+    //     // on le charge dans Dompdf
+    //     $dompdf->loadHtml($html);
 
-        $dompdf->setPaper('A4', 'landscape');
+    //     $dompdf->setPaper('A4', 'landscape');
 
-        // génération du pdf
-        $dompdf->render();
+    //     // génération du pdf
+    //     $dompdf->render();
 
-        // et affichage
-        $dompdf->stream("toshoplist.pdf", [
-            "Attachment" => false,
-        ]);
-    }
+    //     // et affichage
+    //     $dompdf->stream("toshoplist.pdf", [
+    //         "Attachment" => false,
+    //     ]);
+    // }
     /**
      * @Route("/moncompte/mon-planning/{id}", name="planning")
      */
