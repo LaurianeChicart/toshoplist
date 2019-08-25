@@ -11,8 +11,8 @@ Dans le fichier .env, adapter la ligne DATABASE_URL selon votre base de données
 En CLI, 
 - mettre à jour composer : composer -update
 - créer la base de données : php bin/console doctrine:database:create
-- créer les tables de celles-ci avec les migrations : php bin/console make:migration puis php bin/console doctrine:migrations:migrate
-- remplir les données de base avec les fixtures : php bin/console make:fixtures puis php bin/console doctrine:fixtures:load
+- créer les tables de celles-ci avec les migrations : php bin/console doctrine:migrations:migrate
+- remplir les données de base avec les fixtures : php bin/console doctrine:fixtures:load
 - utiliser le serveur personnalisé : php bin/console server:run
 
 L'application est alors accessible dans le navigateur de votre choix et vous pouvez créer un compte utilisateur.
