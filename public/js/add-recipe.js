@@ -124,7 +124,7 @@ const addRecipeForm = {
         //gestion des accents
         var normalize = function (term) {
             var accentMap = {
-                "À": "A", "Á": "A", "Â": "A", "Ã": "A", "Ä": "A", "Å": "A", "à": "a", "á": "a", "â": "a", "ã": "a", "ä": "a", "å": "a", "Ò": "O", "Ó": "O", "Ô": "O", "Õ": "O", "Õ": "O", "Ö": "O", "Ø": "O", "ò": "o", "ó": "o", "ô": "o", "õ": "o", "ö": "o", "ø": "o", "È": "E", "É": "E", "Ê": "E", "Ë": "E", "è": "e", "é": "e", "ê": "e", "ë": "e", "ð": "e", "Ç": "C", "ç": "c", "Ð": "D", "Ì": "I", "Í": "I", "Î": "I", "Ï": "I", "ì": "i", "í": "i", "î": "i", "ï": "i", "Ù": "U", "Ú": "U", "Û": "U", "Ü": "U", "ù": "u", "ú": "u", "û": "u", "ü": "u", "Ñ": "N", "ñ": "n", "Š": "S", "š": "s", "Ÿ": "Y", "ÿ": "y", "ý": "y", "Ž": "Z", "ž": "z"
+                "Œ": "OE", "OE": "Œ", "œ": "oe", "oe": "œ", "À": "A", "Á": "A", "Â": "A", "Ã": "A", "Ä": "A", "Å": "A", "à": "a", "á": "a", "â": "a", "ã": "a", "ä": "a", "å": "a", "Ò": "O", "Ó": "O", "Ô": "O", "Õ": "O", "Õ": "O", "Ö": "O", "Ø": "O", "ò": "o", "ó": "o", "ô": "o", "õ": "o", "ö": "o", "ø": "o", "È": "E", "É": "E", "Ê": "E", "Ë": "E", "è": "e", "é": "e", "ê": "e", "ë": "e", "ð": "e", "Ç": "C", "ç": "c", "Ð": "D", "Ì": "I", "Í": "I", "Î": "I", "Ï": "I", "ì": "i", "í": "i", "î": "i", "ï": "i", "Ù": "U", "Ú": "U", "Û": "U", "Ü": "U", "ù": "u", "ú": "u", "û": "u", "ü": "u", "Ñ": "N", "ñ": "n", "Š": "S", "š": "s", "Ÿ": "Y", "ÿ": "y", "ý": "y", "Ž": "Z", "ž": "z"
             };
             var ret = "";
             for (var i = 0; i < term.length; i++) {
@@ -173,15 +173,20 @@ const addRecipeForm = {
     removeAccents(str) {
         var accents = "ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž";
         var accentsOut = "AAAAAAaaaaaaOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz";
-        str = str.split("");
-        var strLen = str.length;
-        var i, x;
-        for (i = 0; i < strLen; i++) {
-            if ((x = accents.indexOf(str[i])) != -1) {
-                str[i] = accentsOut[x];
-            }
+        if (str == "oeuf") {
+            return "œuf";
         }
-        return str.join("");
+        else {
+            str = str.split("");
+            var strLen = str.length;
+            var i, x;
+            for (i = 0; i < strLen; i++) {
+                if ((x = accents.indexOf(str[i])) != -1) {
+                    str[i] = accentsOut[x];
+                }
+            }
+            return str.join("");
+        }
     },
 
     fillFieldsAtAutocompletion(label, department, value, i) {

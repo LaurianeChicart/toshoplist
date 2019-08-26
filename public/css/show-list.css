@@ -14,60 +14,60 @@
 }
 
 /* Masque le checkbox par défaut */
-    .item input {
-      position: absolute;
-      opacity: 0;
-      cursor: pointer;
-      height: 0;
-      width: 0;
-    }
-    
-    /* On personnalise la checkbox */
-    .checkmark {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 25px;
-      width: 25px;
-      border-radius: 5px;
-      background-color: #eee;
-      border: 1px solid #6c757d;
-    }
-    
-    /* Au survol, la checkbox change de couleur */
-    .item:hover input ~ .checkmark {
-      background-color: #ccc;
-    }
-    
-    /*Apparence quand ckecked*/
-    .item input:checked ~ .checkmark {
-      background-color:#6c757d;
-    }
-    
-    /* Création du marqueur de checked... */
-    .checkmark:after {
-      content: "";
-      position: absolute;
-      display: none;
-    }
-    
-    /* ...qui apparaît quand la case est cheched*/
-    .item input:checked ~ .checkmark:after {
-      display: block;
-    }
-    
-    /* Apparence du marqueur */
-    .item .checkmark:after {
-      left: 8px;
-      top: 2px;
-      width: 10px;
-      height: 15px;
-      border: solid white;
-      border-width: 0 3px 3px 0;
-      -webkit-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-      transform: rotate(45deg);
-    }
+.item input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* On personnalise la checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  border-radius: 5px;
+  background-color: #eee;
+  border: 1px solid #6c757d;
+}
+
+/* Au survol, la checkbox change de couleur */
+.item:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/*Apparence quand ckecked*/
+.item input:checked ~ .checkmark {
+  background-color:#6c757d;
+}
+
+/* Création du marqueur de checked... */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* ...qui apparaît quand la case est cheched*/
+.item input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Apparence du marqueur */
+.item .checkmark:after {
+  left: 8px;
+  top: 2px;
+  width: 10px;
+  height: 15px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
 /* Animation quand on raye un élément de la liste */
 @-webkit-keyframes strike{
   0%   { width : 0; }
