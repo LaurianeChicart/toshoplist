@@ -6,6 +6,7 @@ use App\Entity\User;
 
 use App\Form\UserDatasType;
 use App\Form\RegistrationType;
+use App\Helpers\UserHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,10 +38,7 @@ class SecurityController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $hash = $encoder->encodePassword($user, htmlspecialchars($user->getPassword()));
-                $user->setPassword($hash);
-                $user->setEmail(htmlspecialchars($user->getEmail()));
-                $manager->persist($user);
+                $manager->persist($user->setNewUser($encoder));
                 $manager->flush();
 
                 return $this->redirectToRoute('security_login');
@@ -91,16 +89,7 @@ class SecurityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($encoder->isPasswordValid($user, $user->getCurrentPassword())) {
-                if ($user->getNewPassword() != null) {
-                    $hash = $encoder->encodePassword($user, htmlspecialchars($user->getNewPassword()));
-                    $user->setPassword($hash);
-                }
-                if ($user->getEmail() != $originalEmail) {
-                    $user->setEmail(htmlspecialchars($user->getEmail()));
-                }
-                $manager->persist($user);
-                $manager->flush();
-
+                UserHelper::updateUserDatas($user, $originalEmail, $encoder, $manager);
                 return $this->json([
                     'message' => "Vos données de connection ont été mises à jour !",
                 ], 200);
@@ -114,7 +103,6 @@ class SecurityController extends AbstractController
         } else {
             $errorMessage = null;
         }
-
         return $this->render('security/user_datas.twig', [
             'form' => $form->createView(),
             'errorMessage' => $errorMessage

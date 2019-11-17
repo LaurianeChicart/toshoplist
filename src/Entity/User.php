@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -300,6 +301,18 @@ class User implements UserInterface
                 $planning->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * On ajuste l'adresse mail (échappe) et on hashe le mot de passe
+     */
+    public function setNewUser(UserPasswordEncoderInterface $encoder): self
+    {
+        $hash = $encoder->encodePassword($this, htmlspecialchars($this->getPassword()));
+        $this->setPassword($hash);
+        $this->setEmail(htmlspecialchars($this->getEmail()));
 
         return $this;
     }

@@ -6,22 +6,18 @@ use App\Entity\Memo;
 use App\Entity\Recipe;
 use App\Form\MemoType;
 use App\Form\RecipeType;
+use App\Helpers\ImageHelper;
+use App\Helpers\RecipeHelper;
 use App\Repository\MealRepository;
 use App\Repository\MemoRepository;
-use App\Repository\UserRepository;
 use App\Repository\RecipeRepository;
 use App\Repository\IngredientRepository;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\RecipeIngredientRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class MemoRecipeController extends AbstractController
 {
@@ -136,101 +132,26 @@ class MemoRecipeController extends AbstractController
 
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
+        $RecipeHelper = new RecipeHelper($manager, $ingredientRepo, $recipeIngredientRepo);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            // création de recette : on défint le user associé
-            if (!$recipe->getId()) {
-                $recipe->setUser($user);
-            }
-            $recipe->setName(htmlspecialchars($recipe->getName()));
-
-            $instructions = $recipe->getInstructions();
-            $recipe->setInstructions(htmlspecialchars($instructions));
-
-            $link = $recipe->getLink();
-            $recipe->setLink(htmlspecialchars($link));
-
-            // on passe en revue les recipeIngredients reçus
+            // enregistrement de la recette et des ingrédients
             $ingredientsRecipe = $recipe->getRecipeIngredients();
-            foreach ($ingredientsRecipe as $ingredientRecipe) {
-                $ingredientId = $ingredientRecipe->getIngredient()->getId();
-                // sinon, l'ingrédient existe on le récupère
-                if ($ingredientId != null) {
-                    $ingredient = $ingredientRepo->findOneBy(['id' => $ingredientId]);
-                    //si c'est un ingrédient de l'utilisateur, accepter les mises à jour de celui-ci
-                    if ($ingredient->getUser() != null) {
-                        $ingredient->setName(htmlspecialchars($ingredientRecipe->getIngredient()->getName()));
-                        $ingredient->setDepartment($ingredientRecipe->getIngredient()->getDepartment());
-                        $manager->persist($ingredient);
-                    }
-                }
-                // si l'ingrédient associé n'existe pas dans la liste de la bdd, le créer
-                else {
-                    $ingredient = $ingredientRecipe->getIngredient();
-                    $ingredient->setUser($user);
-                    $ingredient->setName(htmlspecialchars($ingredientRecipe->getIngredient()->getName()));
-                    $ingredient->setDepartment($ingredientRecipe->getIngredient()->getDepartment());
-                    $manager->persist($ingredient);
-                }
+            $RecipeHelper->saveIngredientsCollectionAndRecipe($ingredientsRecipe, $recipe, $user);
+            $RecipeHelper->removeUnusefulIngredients($user);
 
-                //si le recipeIngredient n'existe pas, le créer
-                if (!$ingredientRecipe->getId()) {
-                    $ingredientRecipe->setRecipe($recipe);
-                    $ingredientRecipe->setIngredient($ingredient);
-                }
-                // sinon le récupérer et le mettre à jour
-                else {
-                    $ingredientRecipe = $recipeIngredientRepo->findOneBy(['id' => $ingredientRecipe->getId()]);
-                    $ingredientRecipe->setIngredient($ingredient);
-                }
-                $manager->persist($ingredientRecipe);
-            }
+            //enregistrement de l'image
             $image = $form['image']->getData();
-            if ($image) {
-                if (!is_null($originalImage)) {
-                    unlink($this->getParameter('images_directory') . '/' . $originalImage);
-                    unlink($this->getParameter('thumbnails_directory') . '/' . $originalImage);
-                }
+            $ImageHelper = new ImageHelper($this->getParameter('images_directory'), $this->getParameter('thumbnails_directory'));
 
-                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                $newImageName = $safeFilename . '-' . uniqid() . '.' . $image->guessClientExtension();
-                try {
-                    $image->move($this->getParameter('images_directory'), $newImageName);
-                    $recipe->setImage($newImageName);
-                } catch (FileException $e) { }
-            } else {
-                $recipe->setImage($originalImage);
-            }
-
-            //supprime les ingredients du user qui ne sont utilisés dans aucune de ses recettes
-            $ingredientsUser = $ingredientRepo->findBy(["user" => $user]);
-            foreach ($ingredientsUser as $ingredientUser) {
-                if ($recipeIngredientRepo->findBy(["ingredient" => $ingredientUser]) == null) {
-                    $manager->remove($ingredientUser);
-                }
-            }
-            $manager->persist($recipe);
+            $ImageHelper->replaceRecipeImage($image, $originalImage, $recipe);
             $manager->flush();
 
             return $this->redirectToRoute('show-recipe', ['id' => $recipe->getId()]);
         }
 
-        $listIngredients = $ingredientRepo->findByUserIngredients($user);
-
-        foreach ($listIngredients as $ingredientFromList) {
-            if ($ingredientFromList->getUser() == null) {
-                $ingredientFromList->setUserIsNull(true);
-            } else {
-                $ingredientFromList->setUserIsNull(false);
-            }
-        }
-        $encoders = [new XmlEncoder(), new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-        $serializer = new Serializer($normalizers, $encoders);
-
-        $encodedList = $serializer->serialize($listIngredients, 'json', ['attributes' => ['id', 'name', 'department' => ['id'], 'userIsNull']]);
+        //récupération des ingrédients + ingrédients utilisateurs pour l'autocomplétion
+        $encodedList = $RecipeHelper->getNewIngredientsList($user);
 
         return $this->render('main/recipes/create-recipe.twig', [
             'recipeType' => $form->createView(),
@@ -258,26 +179,15 @@ class MemoRecipeController extends AbstractController
     /**
      * @Route("/moncompte/supprimer-ma-recette/{id}", name="delete-recipe")
      */
-    public function deleteRecipe($id, RecipeRepository $recipeRepo, ObjectManager $manager, IngredientRepository $ingredientRepo, RecipeIngredientRepository $recipeIngredientRepo, UserRepository $userRepo)
+    public function deleteRecipe($id, RecipeRepository $recipeRepo, ObjectManager $manager, IngredientRepository $ingredientRepo, RecipeIngredientRepository $recipeIngredientRepo)
     {
+        $RecipeHelper = new RecipeHelper($manager, $ingredientRepo, $recipeIngredientRepo);
+        //la recette que l'on souhaite supprimer est-elle utilisée dans les plannings ??
+        $recipeUsedInPlannings = $RecipeHelper->checkThisRecipeInPlannings($this->getUser()->getPlannings(), $recipeRepo->findOneBy(['id' => $id]));
 
-        $counter = 0;
-        //la recette est-elle utilisée dans les plannings ??
-        $plannings = $this->getUser()->getPlannings();
-        foreach ($plannings as $planning) {
-            $days = $planning->getDay();
-            foreach ($days as $day) {
-                $plannedMeals = $day->getPlannedMeal();
-                foreach ($plannedMeals as $plannedMeal) {
-                    if ($plannedMeal->getRecipe() == $recipeRepo->findOneBy(['id' => $id])) {
-                        $counter++;
-                    }
-                }
-            }
-        }
         if (!$recipeRepo->findOneBy(['id' => $id]) || $recipeRepo->findOneBy(['id' => $id])->getUser() != $this->getUser()) {
             throw $this->createNotFoundException("La recette demandée n'existe pas.");
-        } elseif ($counter > 0) {
+        } elseif ($recipeUsedInPlannings) {
             throw $this->createNotFoundException("La recette demandée ne peut être supprimée car elle est utilisée dans vos plannings");
         } else {
             $recipe = $recipeRepo->findOneBy(['id' => $id]);
@@ -285,21 +195,20 @@ class MemoRecipeController extends AbstractController
 
         $image = $recipe->getImage();
         if ($image != null) {
-            unlink($this->getParameter('images_directory') . '/' . $image);
-            unlink($this->getParameter('thumbnails_directory') . '/' . $image);
+            $ImageHelper = new ImageHelper($this->getParameter('images_directory'), $this->getParameter('thumbnails_directory'));
+            $ImageHelper->removeImage($image);
         }
         $manager->remove($recipe);
         //supprime les ingredients du user qui ne sont utilisés dans aucune de ses recettes
         $user = $this->getUser();
-        $ingredientsUser = $ingredientRepo->findBy(["user" => $user]);
-        foreach ($ingredientsUser as $ingredientUser) {
-            if ($recipeIngredientRepo->findBy(["ingredient" => $ingredientUser]) == null) {
-                $manager->remove($ingredientUser);
-            }
-        }
+
+        $RecipeHelper->removeUnusefulIngredients($user);
+
         $manager->flush();
+
         $filesystem = new Filesystem();
         $filesystem->remove([$image]);
+
         return $this->redirectToRoute('recipes');
     }
 }
